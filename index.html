@@ -4,325 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AuraSkin — ผู้ช่วยอัจฉริยะด้านการดูแลผิว</title>
+<meta name="description" content="AuraSkin ใช้ AI วิเคราะห์และคัดกรองสภาพผิวเบื้องต้นจากภาพถ่าย พร้อมแนะนำแนวทางการดูแลผิวและข้อมูลส่วนผสม/ผลิตภัณฑ์ — โครงงาน Team 14">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --cream:#F6F4EE;
-    --paper:#FFFFFF;
-    --ink:#233A31;
-    --ink-soft:#4F6459;
-    --sage-deep:#3C5C4C;
-    --sage:#7FA98F;
-    --sage-mid:#A9C7B4;
-    --sage-mist:#E4EEE6;
-    --clay:#D98F72;
-    --line: rgba(35,58,49,0.12);
-  }
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:var(--cream);
-    color:var(--ink);
-    font-family:'Noto Sans Thai','Prompt',sans-serif;
-    font-weight:400;
-    line-height:1.65;
-    -webkit-font-smoothing:antialiased;
-  }
-  h1,h2,h3,.display{
-    font-family:'Prompt','Noto Sans Thai',sans-serif;
-    color:var(--sage-deep);
-    margin:0;
-    letter-spacing:-0.01em;
-  }
-  a{color:inherit;}
-  img{max-width:100%;display:block;}
-  .wrap{
-    max-width:1080px;
-    margin:0 auto;
-    padding:0 32px;
-  }
-  section{padding:96px 0;}
-  section + section{border-top:1px solid var(--line);}
-
-  /* ---------- nav ---------- */
-  nav{
-    position:sticky;top:0;z-index:50;
-    background:rgba(246,244,238,0.88);
-    backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
-  }
-  nav .wrap{
-    display:flex;align-items:center;justify-content:space-between;
-    padding-top:16px;padding-bottom:16px;
-  }
-  .brand{display:flex;align-items:center;gap:10px;font-family:'Prompt';font-weight:700;font-size:1.15rem;color:var(--sage-deep);}
-  .brand .mark{
-    width:26px;height:26px;border-radius:8px;background:var(--sage);
-    position:relative;flex:none;
-  }
-  .brand .mark::before,.brand .mark::after{
-    content:"";position:absolute;background:var(--paper);
-  }
-  .brand .mark::before{left:11px;top:5px;width:4px;height:16px;border-radius:2px;}
-  .brand .mark::after{left:5px;top:11px;width:16px;height:4px;border-radius:2px;}
-  nav ul{list-style:none;display:flex;gap:28px;margin:0;padding:0;font-size:0.92rem;color:var(--ink-soft);}
-  nav ul li a{text-decoration:none;}
-  nav ul li a:hover{color:var(--sage-deep);}
-  .team-tag{
-    font-size:0.78rem;color:var(--sage-deep);border:1px solid var(--sage-mid);
-    padding:5px 12px;border-radius:100px;
-  }
-
-  /* ---------- hero ---------- */
-  .hero{padding-top:76px;padding-bottom:64px;border-top:none;}
-  .hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:56px;align-items:center;}
-  .eyebrow-thai{color:var(--sage);font-size:1.05rem;margin-bottom:6px;}
-  .hero h1{font-size:3.4rem;line-height:1.05;font-weight:700;}
-  .hero h1 span{color:var(--sage);}
-  .hero p.lede{margin-top:22px;font-size:1.08rem;color:var(--ink-soft);max-width:46ch;}
-  .cta-row{display:flex;gap:14px;margin-top:34px;}
-  .btn{
-    display:inline-block;padding:13px 26px;border-radius:12px;
-    font-size:0.98rem;font-weight:600;text-decoration:none;
-    transition:transform .15s ease;
-    cursor:pointer;border:none;font-family:inherit;
-  }
-  .btn:hover{transform:translateY(-2px);}
-  .btn-primary{background:var(--sage-deep);color:var(--paper);}
-  .btn-ghost{background:transparent;color:var(--sage-deep);border:1.5px solid var(--sage-mid);}
-
-  .hero-visual{
-    background:var(--paper);
-    border-radius:22px;
-    border:1px solid var(--line);
-    box-shadow:0 30px 60px -35px rgba(35,58,49,0.35);
-    overflow:hidden;
-  }
-  .hero-visual .bar{
-    display:flex;gap:6px;padding:12px 16px;background:var(--sage-mist);
-  }
-  .hero-visual .bar span{width:9px;height:9px;border-radius:50%;background:var(--sage-mid);}
-  .hero-visual .face{
-    padding:26px;display:grid;grid-template-columns:1fr 1fr;gap:18px;
-  }
-  .face-photo{
-    aspect-ratio:1/1.05;border-radius:16px;
-    background:linear-gradient(160deg,#F3D9BF 0%, #E8B98F 55%, #D98F72 100%);
-    position:relative;
-  }
-  .face-photo::after{
-    content:"";position:absolute;inset:20% 30% 30% 30%;
-    border-radius:50%;border:2px dashed rgba(255,255,255,0.7);
-  }
-  .face-dots span{
-    position:absolute;width:10px;height:10px;border-radius:50%;
-    background:var(--sage);border:2px solid #fff;
-  }
-  .stat-list{display:flex;flex-direction:column;gap:10px;justify-content:center;}
-  .stat-pill{
-    background:var(--sage-mist);border-radius:12px;padding:12px 14px;
-    font-size:0.84rem;color:var(--sage-deep);
-  }
-  .stat-pill b{display:block;font-size:1.15rem;font-family:'Prompt';color:var(--ink);}
-
-  /* ---------- section heads ---------- */
-  .head{max-width:640px;margin-bottom:52px;}
-  .kicker{color:var(--sage);font-weight:600;font-size:0.92rem;margin-bottom:8px;}
-  .head h2{font-size:2.1rem;font-weight:700;}
-  .head p{margin-top:14px;color:var(--ink-soft);}
-
-  /* ---------- problem cards ---------- */
-  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-  .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;}
-  .card{
-    background:var(--paper);border:1px solid var(--line);
-    border-radius:18px;padding:30px 26px;
-  }
-  .card h3{font-size:1.12rem;font-weight:600;margin-bottom:12px;}
-  .card p{color:var(--ink-soft);font-size:0.95rem;margin:0;}
-  .icon-badge{
-    width:42px;height:42px;border-radius:12px;background:var(--sage-mist);
-    display:flex;align-items:center;justify-content:center;margin-bottom:16px;
-    font-size:1.15rem;
-  }
-  .callout{
-    margin-top:40px;background:var(--sage-deep);color:#EFF5F0;
-    border-radius:18px;padding:26px 32px;font-size:1.05rem;font-weight:500;
-    text-align:center;
-  }
-
-  /* ---------- solution flow (sequence -> numbered) ---------- */
-  .flow-strip{
-    display:grid;grid-template-columns:repeat(5,1fr);gap:0;
-    border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--paper);
-  }
-  .flow-step{padding:28px 20px;position:relative;}
-  .flow-step + .flow-step{border-left:1px solid var(--line);}
-  .flow-step .num{
-    font-family:'Prompt';font-weight:700;color:var(--sage-mid);font-size:1.6rem;
-  }
-  .flow-step h4{margin:10px 0 6px;font-size:1rem;color:var(--ink);font-weight:600;}
-  .flow-step p{margin:0;font-size:0.85rem;color:var(--ink-soft);}
-  .flow-note{
-    text-align:center;margin-top:24px;color:var(--sage-deep);font-weight:500;
-  }
-
-  /* ---------- objectives ---------- */
-  .obj-row{display:flex;gap:18px;padding:24px 0;align-items:flex-start;}
-  .obj-row + .obj-row{border-top:1px solid var(--line);}
-  .obj-badge{
-    flex:none;width:38px;height:38px;border-radius:50%;background:var(--sage-mist);
-    color:var(--sage-deep);display:flex;align-items:center;justify-content:center;
-    font-family:'Prompt';font-weight:700;font-size:0.95rem;
-  }
-  .obj-row h4{margin:0 0 4px;font-size:1.05rem;font-weight:600;}
-  .obj-row p{margin:0;color:var(--ink-soft);font-size:0.94rem;}
-
-  /* ---------- scope ---------- */
-  .scope-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
-  .scope-card{
-    background:var(--sage-mist);border-radius:18px;padding:26px 28px;
-  }
-  .scope-card h3{font-size:1rem;font-weight:600;margin-bottom:10px;color:var(--sage-deep);}
-  .scope-card p{margin:0;color:var(--ink-soft);font-size:0.93rem;}
-  .disclaimer{
-    margin-top:26px;font-size:0.86rem;color:var(--ink-soft);
-    border-left:3px solid var(--clay);padding-left:14px;
-  }
-
-  /* ---------- timeline (system flow / dev steps) ---------- */
-  .timeline{position:relative;padding-left:2px;}
-  .tl-item{
-    display:grid;grid-template-columns:64px 1fr;gap:22px;padding-bottom:34px;position:relative;
-  }
-  .tl-item:last-child{padding-bottom:0;}
-  .tl-dot{
-    width:44px;height:44px;border-radius:50%;background:var(--sage-deep);color:#fff;
-    display:flex;align-items:center;justify-content:center;font-family:'Prompt';font-weight:700;
-    position:relative;z-index:1;
-  }
-  .tl-item::before{
-    content:"";position:absolute;left:21px;top:44px;bottom:-34px;width:2px;background:var(--sage-mid);
-  }
-  .tl-item:last-child::before{display:none;}
-  .tl-body h4{font-size:1.05rem;font-weight:600;margin-bottom:5px;}
-  .tl-body p{margin:0;color:var(--ink-soft);font-size:0.94rem;}
-
-  /* ---------- technology / tools ---------- */
-  .tech-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
-  .tech-card{
-    display:flex;gap:16px;align-items:flex-start;
-    background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:24px;
-  }
-  .tech-icon{
-    flex:none;width:44px;height:44px;border-radius:12px;
-    background:var(--sage-mist);display:flex;align-items:center;justify-content:center;
-    font-size:1.2rem;
-  }
-  .tech-card h4{font-size:1rem;font-weight:600;margin:0 0 6px;}
-  .tech-card p{margin:0;color:var(--ink-soft);font-size:0.88rem;}
-
-  /* ---------- UI mockups ---------- */
-  .mock-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-  .mock{
-    background:var(--paper);border:1px solid var(--line);border-radius:18px;
-    overflow:hidden;display:flex;flex-direction:column;
-  }
-  .mock-top{background:var(--sage-mist);padding:10px 14px;font-size:0.78rem;color:var(--sage-deep);font-weight:600;}
-  .mock-body{padding:18px;flex:1;font-size:0.78rem;color:var(--ink-soft);}
-  .mock-title{text-align:center;padding:14px 0 18px;font-weight:600;color:var(--sage-deep);font-size:0.95rem;}
-  .m1 .mock-body{background:linear-gradient(180deg,#EFF5F0,#fff);}
-  .m1 .headline{font-family:'Prompt';font-weight:700;color:var(--sage-deep);font-size:0.95rem;line-height:1.4;margin-bottom:10px;}
-  .m1 .btnrow{display:flex;gap:6px;margin-top:12px;}
-  .m1 .mini-btn{flex:1;text-align:center;padding:8px 4px;border-radius:8px;font-size:0.68rem;font-weight:600;cursor:pointer;}
-  .m1 .mini-btn.a{background:var(--sage-deep);color:#fff;}
-  .m1 .mini-btn.b{background:var(--sage-mist);color:var(--sage-deep);}
-  .m2 .mock-body{display:flex;flex-direction:column;gap:10px;}
-  .m2 .analysis-face{
-    aspect-ratio:1.6/1;border-radius:10px;
-    background:linear-gradient(160deg,#F3D9BF,#E8B98F);position:relative;
-  }
-  .m2 .analysis-face span{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--clay);border:2px solid #fff;}
-  .m2 .result-row{display:flex;justify-content:space-between;background:var(--sage-mist);border-radius:8px;padding:8px 10px;}
-  .m2 .result-row b{color:var(--sage-deep);}
-  .m3 .mock-body{display:flex;flex-direction:column;gap:8px;}
-  .bubble{border-radius:12px;padding:9px 12px;font-size:0.74rem;max-width:88%;}
-  .bubble.user{align-self:flex-end;background:var(--sage-deep);color:#fff;border-bottom-right-radius:2px;}
-  .bubble.bot{align-self:flex-start;background:var(--sage-mist);color:var(--ink);border-bottom-left-radius:2px;}
-
-  /* ---------- evaluation ---------- */
-  .eval-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-  .eval-card{border:1px solid var(--line);border-radius:16px;padding:24px;background:var(--paper);}
-  .eval-tag{
-    display:inline-flex;width:30px;height:30px;border-radius:8px;background:var(--sage-mist);
-    color:var(--sage-deep);align-items:center;justify-content:center;font-weight:700;font-family:'Prompt';
-    font-size:0.85rem;margin-bottom:14px;
-  }
-  .eval-card h4{font-size:1rem;font-weight:600;margin:0 0 8px;}
-  .eval-card p{margin:0;color:var(--ink-soft);font-size:0.9rem;}
-  .result-box{
-    margin-top:20px;border:1px dashed var(--sage-mid);border-radius:14px;padding:18px 22px;
-    color:var(--ink-soft);font-size:0.9rem;background:var(--sage-mist);
-  }
-  .result-box b{color:var(--sage-deep);}
-
-  /* ---------- references ---------- */
-  .ref-list{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--paper);}
-  .ref-list li{display:flex;gap:16px;padding:18px 24px;align-items:baseline;}
-  .ref-list li + li{border-top:1px solid var(--line);}
-  .ref-list .ref-num{font-family:'Prompt';font-weight:700;color:var(--sage-mid);width:22px;flex:none;}
-  .ref-list a{font-weight:600;text-decoration:none;color:var(--sage-deep);}
-  .ref-list a:hover{text-decoration:underline;}
-
-  /* ---------- team ---------- */
-  .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-  .team-card{
-    background:var(--paper);border:1px solid var(--line);border-radius:18px;
-    padding:28px 24px;text-align:left;
-  }
-  .team-avatar{
-    width:52px;height:52px;border-radius:50%;
-    background:linear-gradient(160deg,var(--sage-mid),var(--sage-deep));
-    margin-bottom:16px;
-  }
-  .team-card h4{font-size:1.02rem;font-weight:600;margin:0 0 3px;}
-  .team-card .role{color:var(--sage);font-size:0.85rem;font-weight:600;margin-bottom:10px;}
-  .team-card .grade{color:var(--ink-soft);font-size:0.85rem;}
-
-  footer{
-    padding:40px 0;text-align:center;color:var(--ink-soft);font-size:0.85rem;
-  }
-
-  @media (max-width:860px){
-    .hero-grid{grid-template-columns:1fr;}
-    .grid-3,.grid-2,.tech-grid,.scope-grid,.mock-grid,.eval-grid,.team-grid{grid-template-columns:1fr;}
-    .flow-strip{grid-template-columns:1fr;}
-    .flow-step + .flow-step{border-left:none;border-top:1px solid var(--line);}
-    nav ul{display:none;}
-    .hero h1{font-size:2.3rem;}
-    section{padding:64px 0;}
-  }
-  @media (prefers-reduced-motion: reduce){
-    *{transition:none !important;}
-  }
-</style>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/project.css">
 </head>
 <body>
 
-<nav>
+<nav class="site-nav">
   <div class="wrap">
-    <div class="brand"><span class="mark"></span>AuraSkin</div>
-    <ul>
+    <a href="index.html" class="brand"><span class="mark"></span>AuraSkin</a>
+    <button class="nav-toggle" aria-label="เปิดเมนู" aria-expanded="false"><span></span></button>
+    <ul class="nav-links">
       <li><a href="#problem">ที่มา</a></li>
       <li><a href="#solution">แนวคิด</a></li>
       <li><a href="#flow">การทำงาน</a></li>
       <li><a href="#ui">หน้าเว็บไซต์</a></li>
       <li><a href="#team">ทีม</a></li>
     </ul>
-    <span class="team-tag">Team 14</span>
+    <div class="nav-right">
+      <span class="team-tag">Team 14</span>
+      <a href="app.html" class="nav-app-link">เปิดเว็บแอป</a>
+    </div>
   </div>
 </nav>
 
@@ -333,8 +38,8 @@
       <h1>เข้าใจผิวของคุณ<br>ก่อนเลือก<span>ผลิตภัณฑ์</span>ใดๆ</h1>
       <p class="lede">AuraSkin ใช้ปัญญาประดิษฐ์วิเคราะห์และคัดกรองสภาพผิวเบื้องต้นจากภาพถ่าย พร้อมแนะนำแนวทางการดูแลผิวและข้อมูลส่วนผสม/ผลิตภัณฑ์ที่เกี่ยวข้อง — รวมทุกอย่างไว้ในระบบเดียว</p>
       <div class="cta-row">
-        <button class="btn btn-primary">เริ่มดูแนวคิด</button>
-        <button class="btn btn-ghost">ดูตัวอย่างหน้าเว็บไซต์</button>
+        <a href="app.html" class="btn btn-primary">ทดลองใช้เว็บแอป</a>
+        <a href="#problem" class="btn btn-ghost">ดูแนวคิดโครงงาน</a>
       </div>
     </div>
     <div class="hero-visual">
@@ -540,6 +245,7 @@
     <div class="head">
       <div class="kicker">ตัวอย่างการทำงานของเว็บไซต์</div>
       <h2>สามหน้าจอหลักของ AuraSkin</h2>
+      <p>ภาพจำลองด้านล่างคือหน้าตาที่ออกแบบไว้ — ลองใช้งานเวอร์ชันที่กดได้จริงในหน้าเว็บแอป</p>
     </div>
     <div class="mock-grid">
       <div>
@@ -584,6 +290,7 @@
         <div class="mock-title">AI Chat</div>
       </div>
     </div>
+    <p class="mock-cta-note">อยากลองเอง? <a href="app.html">เปิดเว็บแอป AuraSkin</a> แล้วอัปโหลดภาพหรือพิมพ์คุยกับ AI ได้ทันที</p>
   </div>
 </section>
 
@@ -659,19 +366,10 @@
   </div>
 </section>
 
-<footer>
-  AuraSkin · AI Skin Care Assistant — โครงงาน Team 14
+<footer class="site-footer">
+  AuraSkin · AI Skin Care Assistant — โครงงาน Team 14 · <a href="app.html">เปิดเว็บแอป</a>
 </footer>
 
-<script>
-  // Every clickable button on the page just shows the "under construction" error.
-  document.querySelectorAll('.btn, .mini-btn').forEach(function (el) {
-    el.addEventListener('click', function (e) {
-      e.preventDefault();
-      alert('ERROR - Path still under construction.');
-    });
-  });
-</script>
-
+<script src="js/nav.js"></script>
 </body>
 </html>

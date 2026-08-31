@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>เว็บแอป AuraSkin — วิเคราะห์ผิว &amp; AI Chat</title>
+<meta name="description" content="ทดลองใช้เว็บแอป AuraSkin: อัปโหลดภาพเพื่อดูผลวิเคราะห์สภาพผิวเบื้องต้น หรือพูดคุยกับ AI ผู้ช่วยด้านการดูแลผิว">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="brand"><span class="mark"></span>AuraSkin</a>
+    <button class="nav-toggle" aria-label="เปิดเมนู" aria-expanded="false"><span></span></button>
+    <ul class="nav-links">
+      <li><a href="index.html#problem">ที่มาโครงงาน</a></li>
+      <li><a href="index.html#solution">แนวคิด</a></li>
+      <li><a href="index.html#team">ทีม</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="index.html" class="nav-app-link ghost">← กลับหน้าโครงงาน</a>
+    </div>
+  </div>
+</nav>
+
+<main class="app-main">
+  <div class="wrap">
+
+    <div class="app-head">
+      <div class="kicker">เว็บแอป AuraSkin</div>
+      <h1>วิเคราะห์ผิวเบื้องต้น หรือคุยกับ AI ผู้ช่วย</h1>
+      <p>อัปโหลดภาพถ่ายเพื่อดูผลวิเคราะห์สภาพผิวแบบตัวอย่าง หรือสลับไปแท็บแชทเพื่อถามคำถามเรื่องผิวและส่วนผสม</p>
+    </div>
+
+    <p class="app-disclaimer">
+      หน้านี้เป็น <strong>ต้นแบบสาธิต (prototype)</strong> ผลวิเคราะห์และคำตอบแชทเป็นข้อมูลตัวอย่างสำหรับสาธิตการใช้งานเท่านั้น ยังไม่ได้เชื่อมต่อโมเดล AI จริงตามที่ระบุไว้ในหน้าโครงงาน (Google Teachable Machine / OpenAI API) — ไม่ใช่การวินิจฉัยโรคหรือทดแทนแพทย์
+    </p>
+
+    <div class="tabbar" role="tablist">
+      <button class="tab-btn active" data-tab="panel-analyze" role="tab" aria-selected="true">วิเคราะห์ผิว</button>
+      <button class="tab-btn" data-tab="panel-chat" role="tab" aria-selected="false">คุยกับ AI ผู้ช่วย</button>
+    </div>
+
+    <!-- ================= ANALYZE PANEL ================= -->
+    <div id="panel-analyze" class="tab-panel active" role="tabpanel">
+      <div class="analyze-grid">
+
+        <div class="upload-card">
+          <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="อัปโหลดภาพผิว">
+            <div class="dz-icon">📷</div>
+            <div class="dz-title">อัปโหลดภาพถ่ายผิวหน้า</div>
+            <div class="dz-sub">ลากไฟล์มาวาง หรือคลิกเพื่อเลือกภาพ (JPG, PNG)</div>
+            <input type="file" id="fileInput" accept="image/*">
+          </div>
+
+          <div id="previewWrap" class="preview-wrap">
+            <div class="preview-frame"><img id="previewImg" alt="ภาพตัวอย่างที่อัปโหลด"></div>
+            <div id="previewName" class="preview-name"></div>
+          </div>
+
+          <div class="upload-actions">
+            <button id="analyzeBtn" class="btn btn-primary" disabled>วิเคราะห์ผิว</button>
+            <button id="resetBtn" class="btn btn-ghost">เริ่มใหม่</button>
+          </div>
+        </div>
+
+        <div class="result-card">
+          <div id="resultEmpty" class="result-empty">
+            <div class="re-icon">✦</div>
+            <p>อัปโหลดภาพผิวแล้วกด “วิเคราะห์ผิว” เพื่อดูผลลัพธ์เบื้องต้นที่นี่</p>
+          </div>
+
+          <div id="resultLoading" class="result-loading">
+            <div class="spinner"></div>
+            <p>กำลังวิเคราะห์ภาพ...</p>
+          </div>
+
+          <div id="resultBody" class="result-body">
+            <div class="result-row"><span>สภาพผิว</span><b id="resSkinType">—</b></div>
+            <div class="result-row"><span>ปัญหาหลักที่พบ</span><b id="resConcern">—</b></div>
+            <div class="result-row"><span>ความแม่นยำโดยประมาณ</span><b id="resConfidence">—</b></div>
+            <div class="result-row" style="display:block;">
+              <div style="display:flex;justify-content:space-between;"><span>คะแนนสุขภาพผิว</span><b id="resScoreText">—</b></div>
+              <div class="score-bar-track"><div id="resScoreBar" class="score-bar-fill" style="width:0%;"></div></div>
+            </div>
+
+            <div style="margin-top:18px;">
+              <span style="font-size:0.85rem;color:var(--ink-soft);">ส่วนผสมที่แนะนำ</span>
+              <div id="resIngredients" class="chip-row"></div>
+            </div>
+
+            <div class="product-card">
+              <div class="product-swatch"></div>
+              <div>
+                <h4 id="resProductName">—</h4>
+                <p id="resProductDesc">—</p>
+              </div>
+            </div>
+
+            <p class="result-note">ผลลัพธ์นี้เป็นการประเมินเบื้องต้นจากข้อมูลตัวอย่าง ไม่ใช่การวินิจฉัยทางการแพทย์</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= CHAT PANEL ================= -->
+    <div id="panel-chat" class="tab-panel" role="tabpanel">
+      <div class="chat-shell">
+        <div id="chatLog" class="chat-log">
+          <div class="chat-bubble bot">สวัสดีค่ะ ถามเรื่องสภาพผิวหรือส่วนผสมที่อยากรู้ได้เลยค่ะ เช่น ผิวแห้ง ผิวมัน สิว หรือ Niacinamide</div>
+        </div>
+        <div class="chat-suggest">
+          <button class="suggest-chip" type="button">ผิวแห้งควรดูแลยังไง</button>
+          <button class="suggest-chip" type="button">ผิวมันเป็นสิวอุดตัน</button>
+          <button class="suggest-chip" type="button">Niacinamide คืออะไร</button>
+          <button class="suggest-chip" type="button">ผิวแพ้ง่าย ระคายเคือง</button>
+        </div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="พิมพ์คำถามเกี่ยวกับผิวของคุณ..." aria-label="พิมพ์ข้อความ">
+          <button id="chatSend" class="chat-send" aria-label="ส่งข้อความ">➤</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  AuraSkin · เว็บแอปตัวอย่าง — โครงงาน Team 14 · <a href="index.html">ดูรายละเอียดโครงงาน</a>
+</footer>
+
+<script src="js/nav.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
