@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AuraSkin — ผู้ช่วยอัจฉริยะด้านการดูแลผิว</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F6F4EE;
+    --paper:#FFFFFF;
+    --ink:#233A31;
+    --ink-soft:#4F6459;
+    --sage-deep:#3C5C4C;
+    --sage:#7FA98F;
+    --sage-mid:#A9C7B4;
+    --sage-mist:#E4EEE6;
+    --clay:#D98F72;
+    --line: rgba(35,58,49,0.12);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Noto Sans Thai','Prompt',sans-serif;
+    font-weight:400;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Prompt','Noto Sans Thai',sans-serif;
+    color:var(--sage-deep);
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  .wrap{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+  section{padding:96px 0;}
+  section + section{border-top:1px solid var(--line);}
+
+  /* ---------- nav ---------- */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(246,244,238,0.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-top:16px;padding-bottom:16px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Prompt';font-weight:700;font-size:1.15rem;color:var(--sage-deep);}
+  .brand .mark{
+    width:26px;height:26px;border-radius:8px;background:var(--sage);
+    position:relative;flex:none;
+  }
+  .brand .mark::before,.brand .mark::after{
+    content:"";position:absolute;background:var(--paper);
+  }
+  .brand .mark::before{left:11px;top:5px;width:4px;height:16px;border-radius:2px;}
+  .brand .mark::after{left:5px;top:11px;width:16px;height:4px;border-radius:2px;}
+  nav ul{list-style:none;display:flex;gap:28px;margin:0;padding:0;font-size:0.92rem;color:var(--ink-soft);}
+  nav ul li a{text-decoration:none;}
+  nav ul li a:hover{color:var(--sage-deep);}
+  .team-tag{
+    font-size:0.78rem;color:var(--sage-deep);border:1px solid var(--sage-mid);
+    padding:5px 12px;border-radius:100px;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{padding-top:76px;padding-bottom:64px;border-top:none;}
+  .hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:56px;align-items:center;}
+  .eyebrow-thai{color:var(--sage);font-size:1.05rem;margin-bottom:6px;}
+  .hero h1{font-size:3.4rem;line-height:1.05;font-weight:700;}
+  .hero h1 span{color:var(--sage);}
+  .hero p.lede{margin-top:22px;font-size:1.08rem;color:var(--ink-soft);max-width:46ch;}
+  .cta-row{display:flex;gap:14px;margin-top:34px;}
+  .btn{
+    display:inline-block;padding:13px 26px;border-radius:12px;
+    font-size:0.98rem;font-weight:600;text-decoration:none;
+    transition:transform .15s ease;
+    cursor:pointer;border:none;font-family:inherit;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn-primary{background:var(--sage-deep);color:var(--paper);}
+  .btn-ghost{background:transparent;color:var(--sage-deep);border:1.5px solid var(--sage-mid);}
+
+  .hero-visual{
+    background:var(--paper);
+    border-radius:22px;
+    border:1px solid var(--line);
+    box-shadow:0 30px 60px -35px rgba(35,58,49,0.35);
+    overflow:hidden;
+  }
+  .hero-visual .bar{
+    display:flex;gap:6px;padding:12px 16px;background:var(--sage-mist);
+  }
+  .hero-visual .bar span{width:9px;height:9px;border-radius:50%;background:var(--sage-mid);}
+  .hero-visual .face{
+    padding:26px;display:grid;grid-template-columns:1fr 1fr;gap:18px;
+  }
+  .face-photo{
+    aspect-ratio:1/1.05;border-radius:16px;
+    background:linear-gradient(160deg,#F3D9BF 0%, #E8B98F 55%, #D98F72 100%);
+    position:relative;
+  }
+  .face-photo::after{
+    content:"";position:absolute;inset:20% 30% 30% 30%;
+    border-radius:50%;border:2px dashed rgba(255,255,255,0.7);
+  }
+  .face-dots span{
+    position:absolute;width:10px;height:10px;border-radius:50%;
+    background:var(--sage);border:2px solid #fff;
+  }
+  .stat-list{display:flex;flex-direction:column;gap:10px;justify-content:center;}
+  .stat-pill{
+    background:var(--sage-mist);border-radius:12px;padding:12px 14px;
+    font-size:0.84rem;color:var(--sage-deep);
+  }
+  .stat-pill b{display:block;font-size:1.15rem;font-family:'Prompt';color:var(--ink);}
+
+  /* ---------- section heads ---------- */
+  .head{max-width:640px;margin-bottom:52px;}
+  .kicker{color:var(--sage);font-weight:600;font-size:0.92rem;margin-bottom:8px;}
+  .head h2{font-size:2.1rem;font-weight:700;}
+  .head p{margin-top:14px;color:var(--ink-soft);}
+
+  /* ---------- problem cards ---------- */
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;}
+  .card{
+    background:var(--paper);border:1px solid var(--line);
+    border-radius:18px;padding:30px 26px;
+  }
+  .card h3{font-size:1.12rem;font-weight:600;margin-bottom:12px;}
+  .card p{color:var(--ink-soft);font-size:0.95rem;margin:0;}
+  .icon-badge{
+    width:42px;height:42px;border-radius:12px;background:var(--sage-mist);
+    display:flex;align-items:center;justify-content:center;margin-bottom:16px;
+    font-size:1.15rem;
+  }
+  .callout{
+    margin-top:40px;background:var(--sage-deep);color:#EFF5F0;
+    border-radius:18px;padding:26px 32px;font-size:1.05rem;font-weight:500;
+    text-align:center;
+  }
+
+  /* ---------- solution flow (sequence -> numbered) ---------- */
+  .flow-strip{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:0;
+    border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--paper);
+  }
+  .flow-step{padding:28px 20px;position:relative;}
+  .flow-step + .flow-step{border-left:1px solid var(--line);}
+  .flow-step .num{
+    font-family:'Prompt';font-weight:700;color:var(--sage-mid);font-size:1.6rem;
+  }
+  .flow-step h4{margin:10px 0 6px;font-size:1rem;color:var(--ink);font-weight:600;}
+  .flow-step p{margin:0;font-size:0.85rem;color:var(--ink-soft);}
+  .flow-note{
+    text-align:center;margin-top:24px;color:var(--sage-deep);font-weight:500;
+  }
+
+  /* ---------- objectives ---------- */
+  .obj-row{display:flex;gap:18px;padding:24px 0;align-items:flex-start;}
+  .obj-row + .obj-row{border-top:1px solid var(--line);}
+  .obj-badge{
+    flex:none;width:38px;height:38px;border-radius:50%;background:var(--sage-mist);
+    color:var(--sage-deep);display:flex;align-items:center;justify-content:center;
+    font-family:'Prompt';font-weight:700;font-size:0.95rem;
+  }
+  .obj-row h4{margin:0 0 4px;font-size:1.05rem;font-weight:600;}
+  .obj-row p{margin:0;color:var(--ink-soft);font-size:0.94rem;}
+
+  /* ---------- scope ---------- */
+  .scope-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  .scope-card{
+    background:var(--sage-mist);border-radius:18px;padding:26px 28px;
+  }
+  .scope-card h3{font-size:1rem;font-weight:600;margin-bottom:10px;color:var(--sage-deep);}
+  .scope-card p{margin:0;color:var(--ink-soft);font-size:0.93rem;}
+  .disclaimer{
+    margin-top:26px;font-size:0.86rem;color:var(--ink-soft);
+    border-left:3px solid var(--clay);padding-left:14px;
+  }
+
+  /* ---------- timeline (system flow / dev steps) ---------- */
+  .timeline{position:relative;padding-left:2px;}
+  .tl-item{
+    display:grid;grid-template-columns:64px 1fr;gap:22px;padding-bottom:34px;position:relative;
+  }
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-dot{
+    width:44px;height:44px;border-radius:50%;background:var(--sage-deep);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-family:'Prompt';font-weight:700;
+    position:relative;z-index:1;
+  }
+  .tl-item::before{
+    content:"";position:absolute;left:21px;top:44px;bottom:-34px;width:2px;background:var(--sage-mid);
+  }
+  .tl-item:last-child::before{display:none;}
+  .tl-body h4{font-size:1.05rem;font-weight:600;margin-bottom:5px;}
+  .tl-body p{margin:0;color:var(--ink-soft);font-size:0.94rem;}
+
+  /* ---------- technology / tools ---------- */
+  .tech-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  .tech-card{
+    display:flex;gap:16px;align-items:flex-start;
+    background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:24px;
+  }
+  .tech-icon{
+    flex:none;width:44px;height:44px;border-radius:12px;
+    background:var(--sage-mist);display:flex;align-items:center;justify-content:center;
+    font-size:1.2rem;
+  }
+  .tech-card h4{font-size:1rem;font-weight:600;margin:0 0 6px;}
+  .tech-card p{margin:0;color:var(--ink-soft);font-size:0.88rem;}
+
+  /* ---------- UI mockups ---------- */
+  .mock-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .mock{
+    background:var(--paper);border:1px solid var(--line);border-radius:18px;
+    overflow:hidden;display:flex;flex-direction:column;
+  }
+  .mock-top{background:var(--sage-mist);padding:10px 14px;font-size:0.78rem;color:var(--sage-deep);font-weight:600;}
+  .mock-body{padding:18px;flex:1;font-size:0.78rem;color:var(--ink-soft);}
+  .mock-title{text-align:center;padding:14px 0 18px;font-weight:600;color:var(--sage-deep);font-size:0.95rem;}
+  .m1 .mock-body{background:linear-gradient(180deg,#EFF5F0,#fff);}
+  .m1 .headline{font-family:'Prompt';font-weight:700;color:var(--sage-deep);font-size:0.95rem;line-height:1.4;margin-bottom:10px;}
+  .m1 .btnrow{display:flex;gap:6px;margin-top:12px;}
+  .m1 .mini-btn{flex:1;text-align:center;padding:8px 4px;border-radius:8px;font-size:0.68rem;font-weight:600;cursor:pointer;}
+  .m1 .mini-btn.a{background:var(--sage-deep);color:#fff;}
+  .m1 .mini-btn.b{background:var(--sage-mist);color:var(--sage-deep);}
+  .m2 .mock-body{display:flex;flex-direction:column;gap:10px;}
+  .m2 .analysis-face{
+    aspect-ratio:1.6/1;border-radius:10px;
+    background:linear-gradient(160deg,#F3D9BF,#E8B98F);position:relative;
+  }
+  .m2 .analysis-face span{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--clay);border:2px solid #fff;}
+  .m2 .result-row{display:flex;justify-content:space-between;background:var(--sage-mist);border-radius:8px;padding:8px 10px;}
+  .m2 .result-row b{color:var(--sage-deep);}
+  .m3 .mock-body{display:flex;flex-direction:column;gap:8px;}
+  .bubble{border-radius:12px;padding:9px 12px;font-size:0.74rem;max-width:88%;}
+  .bubble.user{align-self:flex-end;background:var(--sage-deep);color:#fff;border-bottom-right-radius:2px;}
+  .bubble.bot{align-self:flex-start;background:var(--sage-mist);color:var(--ink);border-bottom-left-radius:2px;}
+
+  /* ---------- evaluation ---------- */
+  .eval-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .eval-card{border:1px solid var(--line);border-radius:16px;padding:24px;background:var(--paper);}
+  .eval-tag{
+    display:inline-flex;width:30px;height:30px;border-radius:8px;background:var(--sage-mist);
+    color:var(--sage-deep);align-items:center;justify-content:center;font-weight:700;font-family:'Prompt';
+    font-size:0.85rem;margin-bottom:14px;
+  }
+  .eval-card h4{font-size:1rem;font-weight:600;margin:0 0 8px;}
+  .eval-card p{margin:0;color:var(--ink-soft);font-size:0.9rem;}
+  .result-box{
+    margin-top:20px;border:1px dashed var(--sage-mid);border-radius:14px;padding:18px 22px;
+    color:var(--ink-soft);font-size:0.9rem;background:var(--sage-mist);
+  }
+  .result-box b{color:var(--sage-deep);}
+
+  /* ---------- references ---------- */
+  .ref-list{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--paper);}
+  .ref-list li{display:flex;gap:16px;padding:18px 24px;align-items:baseline;}
+  .ref-list li + li{border-top:1px solid var(--line);}
+  .ref-list .ref-num{font-family:'Prompt';font-weight:700;color:var(--sage-mid);width:22px;flex:none;}
+  .ref-list a{font-weight:600;text-decoration:none;color:var(--sage-deep);}
+  .ref-list a:hover{text-decoration:underline;}
+
+  /* ---------- team ---------- */
+  .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .team-card{
+    background:var(--paper);border:1px solid var(--line);border-radius:18px;
+    padding:28px 24px;text-align:left;
+  }
+  .team-avatar{
+    width:52px;height:52px;border-radius:50%;
+    background:linear-gradient(160deg,var(--sage-mid),var(--sage-deep));
+    margin-bottom:16px;
+  }
+  .team-card h4{font-size:1.02rem;font-weight:600;margin:0 0 3px;}
+  .team-card .role{color:var(--sage);font-size:0.85rem;font-weight:600;margin-bottom:10px;}
+  .team-card .grade{color:var(--ink-soft);font-size:0.85rem;}
+
+  footer{
+    padding:40px 0;text-align:center;color:var(--ink-soft);font-size:0.85rem;
+  }
+
+  @media (max-width:860px){
+    .hero-grid{grid-template-columns:1fr;}
+    .grid-3,.grid-2,.tech-grid,.scope-grid,.mock-grid,.eval-grid,.team-grid{grid-template-columns:1fr;}
+    .flow-strip{grid-template-columns:1fr;}
+    .flow-step + .flow-step{border-left:none;border-top:1px solid var(--line);}
+    nav ul{display:none;}
+    .hero h1{font-size:2.3rem;}
+    section{padding:64px 0;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><span class="mark"></span>AuraSkin</div>
+    <ul>
+      <li><a href="#problem">ที่มา</a></li>
+      <li><a href="#solution">แนวคิด</a></li>
+      <li><a href="#flow">การทำงาน</a></li>
+      <li><a href="#ui">หน้าเว็บไซต์</a></li>
+      <li><a href="#team">ทีม</a></li>
+    </ul>
+    <span class="team-tag">Team 14</span>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow-thai">ประกาย — ผู้ช่วยอัจฉริยะด้านการดูแลผิว</div>
+      <h1>เข้าใจผิวของคุณ<br>ก่อนเลือก<span>ผลิตภัณฑ์</span>ใดๆ</h1>
+      <p class="lede">AuraSkin ใช้ปัญญาประดิษฐ์วิเคราะห์และคัดกรองสภาพผิวเบื้องต้นจากภาพถ่าย พร้อมแนะนำแนวทางการดูแลผิวและข้อมูลส่วนผสม/ผลิตภัณฑ์ที่เกี่ยวข้อง — รวมทุกอย่างไว้ในระบบเดียว</p>
+      <div class="cta-row">
+        <button class="btn btn-primary">เริ่มดูแนวคิด</button>
+        <button class="btn btn-ghost">ดูตัวอย่างหน้าเว็บไซต์</button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="bar"><span></span><span></span><span></span></div>
+      <div class="face">
+        <div style="position:relative;">
+          <div class="face-photo"></div>
+          <div class="face-dots">
+            <span style="top:24%;left:36%;"></span>
+            <span style="top:38%;left:64%;"></span>
+            <span style="top:58%;left:44%;"></span>
+          </div>
+        </div>
+        <div class="stat-list">
+          <div class="stat-pill">สภาพผิว<b>ผสม</b></div>
+          <div class="stat-pill">ปัญหาหลัก<b>สิวอุดตัน</b></div>
+          <div class="stat-pill">คะแนนสุขภาพผิว<b>8.2 / 10</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="problem">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker">ที่มาและความสำคัญ</div>
+      <h2>ทำไมการดูแลผิวถึงเป็นเรื่องยากกว่าที่คิด</h2>
+      <p>ผู้ใช้งานส่วนใหญ่เจอปัญหาซ้ำๆ สามข้อ ก่อนจะเริ่มดูแลผิวได้อย่างถูกจุด</p>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="icon-badge">◐</div>
+        <h3>ไม่รู้จักสภาพผิวตัวเอง</h3>
+        <p>ผู้ใช้งานบางส่วนไม่รู้ว่าอาการหรือสภาพผิวที่พบควรดูแลอย่างไร ทำให้เริ่มต้นดูแลได้ไม่ถูกจุด</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge">✦</div>
+        <h3>เลือกผลิตภัณฑ์ยาก</h3>
+        <p>ผลิตภัณฑ์ดูแลผิวมีจำนวนมาก จึงอาจเลือกผลิตภัณฑ์หรือส่วนผสมให้เหมาะกับสภาพผิวของตนเองได้ยาก</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge">≡</div>
+        <h3>ข้อมูลมีจำนวนมาก</h3>
+        <p>ข้อมูลด้านการดูแลผิวบนอินเทอร์เน็ตมีจำนวนมาก และอาจไม่ตรงกับความต้องการของแต่ละบุคคล</p>
+      </div>
+    </div>
+    <div class="callout">ดังนั้น AuraSkin จึงถูกออกแบบให้เป็น “ตัวช่วยเบื้องต้น” ที่รวบรวมการวิเคราะห์ + คำแนะนำ + ข้อมูลผลิตภัณฑ์ไว้ในระบบเดียว</div>
+  </div>
+</section>
+
+<section id="solution">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker">แนวคิดของ AuraSkin</div>
+      <h2>เข้าใจผิว → ดูแลผิว → เลือกข้อมูลได้ง่ายขึ้น</h2>
+      <p>ระบบเชื่อมโยงเส้นทางตั้งแต่ภาพถ่ายไปจนถึงผลิตภัณฑ์ที่เกี่ยวข้อง เป็นห้าขั้นตอนต่อเนื่อง</p>
+    </div>
+    <div class="flow-strip">
+      <div class="flow-step"><div class="num">1</div><h4>ภาพถ่าย</h4><p>รับภาพสภาพผิวจากผู้ใช้งาน</p></div>
+      <div class="flow-step"><div class="num">2</div><h4>AI</h4><p>วิเคราะห์ข้อมูลภาพเบื้องต้น</p></div>
+      <div class="flow-step"><div class="num">3</div><h4>คำแนะนำ</h4><p>ให้แนวทางการดูแลตามปัญหาที่พบ</p></div>
+      <div class="flow-step"><div class="num">4</div><h4>ส่วนผสม</h4><p>ให้ข้อมูล AHA, BHA, Niacinamide ฯลฯ</p></div>
+      <div class="flow-step"><div class="num">5</div><h4>ผลิตภัณฑ์</h4><p>เชื่อมโยงไปยังผลิตภัณฑ์ที่เกี่ยวข้อง</p></div>
+    </div>
+    <p class="flow-note">จุดเด่นของแนวคิด: เชื่อมโยง “สภาพผิว/ปัญหา → ความต้องการ → ส่วนผสม → ผลิตภัณฑ์” ให้ผู้ใช้เข้าใจได้ง่าย</p>
+  </div>
+</section>
+
+<section id="objectives">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker">วัตถุประสงค์</div>
+      <h2>สิ่งที่ AuraSkin ตั้งใจส่งมอบ</h2>
+    </div>
+    <div>
+      <div class="obj-row">
+        <div class="obj-badge">1</div>
+        <div><h4>พัฒนาระบบ AI</h4><p>ช่วยคัดกรองและประเมินสภาพผิวเบื้องต้นจากภาพถ่าย</p></div>
+      </div>
+      <div class="obj-row">
+        <div class="obj-badge">2</div>
+        <div><h4>ให้คำแนะนำ</h4><p>แนะนำแนวทางการดูแลผิวตามปัญหาที่พบ</p></div>
+      </div>
+      <div class="obj-row">
+        <div class="obj-badge">3</div>
+        <div><h4>แนะนำข้อมูล</h4><p>เชื่อมโยงส่วนผสมและผลิตภัณฑ์ให้เหมาะกับสภาพผิว</p></div>
+      </div>
+      <div class="obj-row">
+        <div class="obj-badge">4</div>
+        <div><h4>เข้าถึงง่าย</h4><p>ช่วยให้ผู้ใช้งานเข้าถึงข้อมูลและแนวทางการดูแลได้สะดวกและรวดเร็วยิ่งขึ้น</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="scope">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker">ขอบเขตการดำเนินงาน</div>
+      <h2>สี่ด้านหลักของโครงงาน</h2>
+    </div>
+    <div class="scope-grid">
+      <div class="scope-card">
+        <h3>1. ด้านข้อมูล</h3>
+        <p>รวบรวมข้อมูลปัญหาผิว วิธีดูแล ส่วนผสม และผลิตภัณฑ์</p>
+      </div>
+      <div class="scope-card">
+        <h3>2. ด้าน AI</h3>
+        <p>ใช้ AI วิเคราะห์ภาพผิวเบื้องต้น และ AI Chat ให้ข้อมูลเกี่ยวกับการดูแลผิว</p>
+      </div>
+      <div class="scope-card">
+        <h3>3. ด้านเว็บไซต์</h3>
+        <p>พัฒนาเว็บไซต์สำหรับรับภาพ แสดงผลการวิเคราะห์ คำแนะนำ และข้อมูลที่เกี่ยวข้อง</p>
+      </div>
+      <div class="scope-card">
+        <h3>4. ด้านการทดสอบ</h3>
+        <p>ทดสอบการวิเคราะห์ภาพ การทำงานของเว็บไซต์ และ AI Chat</p>
+      </div>
+    </div>
+    <p class="disclaimer">ผลลัพธ์ของ AuraSkin เป็นการประเมินเบื้องต้น ไม่ใช่การวินิจฉัยโรคหรือทดแทนแพทย์</p>
+  </div>
+</section>
+
+<section id="flow">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker">หลักการทำงานของระบบ</div>
+      <h2>จากภาพถ่ายหนึ่งใบ สู่คำแนะนำที่ใช้ได้จริง</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-dot">1</div><div class="tl-body"><h4>ถ่ายภาพ</h4><p>ผู้ใช้งานนำภาพผิวเข้าสู่ระบบ</p></div></div>
+      <div class="tl-item"><div class="tl-dot">2</div><div class="tl-body"><h4>วิเคราะห์</h4><p>AI ประมวลผลข้อมูลภาพ</p></div></div>
+      <div class="tl-item"><div class="tl-dot">3</div><div class="tl-body"><h4>ประเมิน</h4><p>ระบุสภาพผิว/ปัญหาเบื้องต้นตามข้อมูลที่ฝึก</p></div></div>
+      <div class="tl-item"><div class="tl-dot">4</div><div class="tl-body"><h4>ให้คำแนะนำ</h4><p>ระบบนำผลไปสร้างคำแนะนำการดูแล</p></div></div>
+      <div class="tl-item"><div class="tl-dot">5</div><div class="tl-body"><h4>ข้อมูลส่วนผสม</h4><p>แสดงข้อมูลส่วนผสม เช่น AHA, BHA, Niacinamide</p></div></div>
+      <div class="tl-item"><div class="tl-dot">6</div><div class="tl-body"><h4>แนะนำผลิตภัณฑ์</h4><p>เชื่อมโยงสภาพผิวกับผลิตภัณฑ์ที่เกี่ยวข้อง</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="technology">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker">เทคโนโลยีที่ใช้</div>
+      <h2>เครื่องมือเบื้องหลัง AuraSkin</h2>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tech-icon">◈</div>
+        <div><h4>Google Teachable Machine</h4><p>ใช้สำหรับฝึก AI ให้รู้จักและจำแนกสภาพผิวจากภาพถ่าย</p></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">✺</div>
+        <div><h4>OpenAI API</h4><p>ใช้สร้างระบบสนทนา ประมวลผลคำถาม และช่วยให้คำแนะนำเกี่ยวกับปัญหาผิว/ส่วนผสม/ผลิตภัณฑ์</p></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">◍</div>
+        <div><h4>เว็บไซต์</h4><p>เป็นส่วนติดต่อผู้ใช้สำหรับนำข้อมูลเข้าสู่ระบบและแสดงผลลัพธ์</p></div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-icon">☁</div>
+        <div><h4>Server / Cloud</h4><p>ใช้สำหรับการประมวลผล AI และการจัดการข้อมูลของระบบ</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="development">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker">ขั้นตอนการพัฒนาโครงงาน</div>
+      <h2>หกขั้นตอนจากปัญหาสู่ระบบที่ใช้งานได้</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-dot">1</div><div class="tl-body"><h4>ศึกษาปัญหา</h4><p>ศึกษาปัญหาการดูแลผิว การเลือกผลิตภัณฑ์ และความต้องการของผู้ใช้งาน</p></div></div>
+      <div class="tl-item"><div class="tl-dot">2</div><div class="tl-body"><h4>เตรียมข้อมูล</h4><p>รวบรวมข้อมูลสำหรับฝึก AI รวมถึงข้อมูลโรค/ความผิดปกติ วิธีดูแล ส่วนผสม และคุณสมบัติผลิตภัณฑ์</p></div></div>
+      <div class="tl-item"><div class="tl-dot">3</div><div class="tl-body"><h4>ฝึก AI</h4><p>เตรียมข้อมูลภาพและฝึกโมเดลสำหรับการวิเคราะห์สภาพผิว</p></div></div>
+      <div class="tl-item"><div class="tl-dot">4</div><div class="tl-body"><h4>พัฒนาเว็บไซต์</h4><p>สร้างระบบเว็บไซต์และเชื่อมต่อการทำงานของ AI</p></div></div>
+      <div class="tl-item"><div class="tl-dot">5</div><div class="tl-body"><h4>ระบบสนทนา</h4><p>นำ OpenAI API มาใช้เพื่อให้ผู้ใช้งานถาม-ตอบเรื่องผิว ส่วนผสม และการใช้ผลิตภัณฑ์</p></div></div>
+      <div class="tl-item"><div class="tl-dot">6</div><div class="tl-body"><h4>ทดสอบ/ปรับปรุง</h4><p>ทดสอบการทำงานจริงและปรับปรุงระบบตามผลที่ได้</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="tools">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker">อุปกรณ์และเครื่องมือที่ใช้</div>
+      <h2>สิ่งที่ทีมใช้ในการลงมือทำจริง</h2>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-card"><div class="tech-icon">⌨</div><div><h4>คอมพิวเตอร์ / โน้ตบุ๊ก</h4><p>ใช้เขียนโปรแกรม พัฒนาเว็บไซต์ และทดสอบระบบ AuraSkin</p></div></div>
+      <div class="tech-card"><div class="tech-icon">◎</div><div><h4>กล้อง / โทรศัพท์</h4><p>ใช้ถ่ายภาพผิวเพื่อนำเข้าสู่ระบบ AI</p></div></div>
+      <div class="tech-card"><div class="tech-icon">☁</div><div><h4>Server / Cloud</h4><p>ใช้ประมวลผล AI และจัดการข้อมูลของระบบ</p></div></div>
+      <div class="tech-card"><div class="tech-icon">✺</div><div><h4>เครื่องมือ AI</h4><p>ใช้วิเคราะห์และพัฒนาระบบ เช่น Teachable Machine และ OpenAI API</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="ui">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker">ตัวอย่างการทำงานของเว็บไซต์</div>
+      <h2>สามหน้าจอหลักของ AuraSkin</h2>
+    </div>
+    <div class="mock-grid">
+      <div>
+        <div class="mock m1">
+          <div class="mock-top">auraskin.com</div>
+          <div class="mock-body">
+            <div class="headline">ปฏิวัติการดูแลผิว!! พร้อมวิเคราะห์สภาพผิวด้วย AI</div>
+            <p style="margin:0 0 4px;">แนะนำวิธีดูแลผิวที่เหมาะกับคุณ เพื่อผิวที่แข็งแรงและส่องประกาย</p>
+            <div class="btnrow">
+              <div class="mini-btn a">เริ่มวิเคราะห์ผิว</div>
+              <div class="mini-btn b">คุยกับ AI ผู้ช่วย</div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-title">หน้าแรก</div>
+      </div>
+      <div>
+        <div class="mock m2">
+          <div class="mock-top">วิเคราะห์ผิว</div>
+          <div class="mock-body">
+            <div class="analysis-face">
+              <span style="top:28%;left:34%;"></span>
+              <span style="top:44%;left:60%;"></span>
+              <span style="top:64%;left:42%;"></span>
+            </div>
+            <div class="result-row"><span>สภาพผิว</span><b>ผสม</b></div>
+            <div class="result-row"><span>ปัญหาหลัก</span><b>สิวอุดตัน</b></div>
+            <div class="result-row"><span>ความแม่นยำ</span><b>92%</b></div>
+          </div>
+        </div>
+        <div class="mock-title">ผลวิเคราะห์ผิว</div>
+      </div>
+      <div>
+        <div class="mock m3">
+          <div class="mock-top">AI Chat</div>
+          <div class="mock-body">
+            <div class="bubble user">ขอคำแนะนำสำหรับผิวแห้งหน่อยค่ะ</div>
+            <div class="bubble bot">แนะนำผลิตภัณฑ์ที่มีส่วนผสมของ Hyaluronic Acid และ Ceramide ค่ะ ลองเริ่มจากเซรั่มบำรุงความชุ่มชื้นก่อนได้เลย</div>
+            <div class="bubble bot">อย่าลืมดื่มน้ำให้เพียงพอ และทาครีมกันแดดทุกวันด้วยนะคะ</div>
+          </div>
+        </div>
+        <div class="mock-title">AI Chat</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="evaluation">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker">การทดสอบและประเมินผล</div>
+      <h2>ตรวจสอบทั้งสามส่วนก่อนใช้งานจริง</h2>
+    </div>
+    <div class="eval-grid">
+      <div class="eval-card">
+        <div class="eval-tag">A</div>
+        <h4>ทดสอบ AI</h4>
+        <p>ตรวจสอบการวิเคราะห์/จำแนกสภาพผิวจากภาพถ่าย และบันทึกผลที่ได้จากการทดลองจริง</p>
+      </div>
+      <div class="eval-card">
+        <div class="eval-tag">B</div>
+        <h4>ทดสอบเว็บไซต์</h4>
+        <p>ตรวจสอบการรับภาพ การแสดงผล การเชื่อมต่อระบบ และความสะดวกในการใช้งาน</p>
+      </div>
+      <div class="eval-card">
+        <div class="eval-tag">C</div>
+        <h4>ทดสอบ AI Chat</h4>
+        <p>ตรวจสอบว่าระบบตอบคำถามและให้ข้อมูลเกี่ยวกับการดูแลผิว/ส่วนผสมได้ตามขอบเขตที่กำหนด</p>
+      </div>
+    </div>
+    <div class="result-box"><b>ผลการทดลองจริง:</b> ใส่ Accuracy / ตารางผล / จำนวนข้อมูล / ผลแบบประเมิน เมื่อมีข้อมูลจริง</div>
+  </div>
+</section>
+
+<section id="references">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker">แหล่งอ้างอิง</div>
+      <h2>ข้อมูลอ้างอิงที่ใช้ในโครงงาน</h2>
+    </div>
+    <ul class="ref-list">
+      <li><span class="ref-num">1</span><a href="https://www.aad.org/public/diseases/acne/skin-care/tips" target="_blank" rel="noopener">American Academy of Dermatology — Skin Care Basics</a></li>
+      <li><span class="ref-num">2</span><a href="https://www.aad.org/public/diseases/acne/skin-care/tips" target="_blank" rel="noopener">American Academy of Dermatology — Acne</a></li>
+      <li><span class="ref-num">3</span><a href="https://teachablemachine.withgoogle.com/" target="_blank" rel="noopener">Google Teachable Machine</a></li>
+      <li><span class="ref-num">4</span><a href="https://platform.openai.com/docs/quickstart" target="_blank" rel="noopener">OpenAI API Documentation</a></li>
+      <li><span class="ref-num">5</span><a href="https://www.who.int/publications/i/item/9789240029200" target="_blank" rel="noopener">WHO — AI and Health</a></li>
+    </ul>
+  </div>
+</section>
+
+<section id="team">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker">คณะผู้จัดทำ</div>
+      <h2>ทีม 14</h2>
+    </div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar"></div>
+        <h4>นายปุณยกร ศรีสมัย</h4>
+        <div class="role">ฝ่ายข้อมูล วิจัย</div>
+        <div class="grade">ม.5/5</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar"></div>
+        <h4>นายธกฤต ศรีจันทร์</h4>
+        <div class="role">ฝ่ายพัฒนาเว็บไซต์และระบบ</div>
+        <div class="grade">ม.5/5</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar"></div>
+        <h4>นายรามิล บัญฑิตร์</h4>
+        <div class="role">ฝ่ายพัฒนา AI</div>
+        <div class="grade">ม.5/5</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  AuraSkin · AI Skin Care Assistant — โครงงาน Team 14
+</footer>
+
+<script>
+  // Every clickable button on the page just shows the "under construction" error.
+  document.querySelectorAll('.btn, .mini-btn').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      alert('ERROR - Path still under construction.');
+    });
+  });
+</script>
+
+</body>
+</html>
