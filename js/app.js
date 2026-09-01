@@ -1,13 +1,15 @@
 // ===================================================================
 // AuraSkin — app.js
-// Powers the demo web app: tab switching, photo upload + mock skin
-// analysis, and a rule-based AI chat demo.
+// Powers the demo web app: tab switching and photo upload + mock skin
+// analysis.
 //
-// NOTE: This prototype has no real backend, camera-vision model, or
-// language model wired up yet (see the project's Technology section
-// for the intended Teachable Machine + OpenAI API stack). The results
-// below are illustrative sample data so the interface can be tried
-// end to end, and are clearly labelled as a preview.
+// NOTE: The skin-analysis result below is illustrative sample data —
+// no camera-vision model (e.g. Teachable Machine) is wired up yet, so
+// it's clearly labelled as a preview in the UI.
+//
+// The AI Chat tab is handled separately by js/chatbot.js, which talks
+// to a real AI backend (Cloudflare Worker proxy). Keep chat logic out
+// of this file so the two don't double-bind the same buttons.
 // ===================================================================
 
 (function () {
@@ -159,62 +161,4 @@
       resultEmpty.style.display = 'flex';
     });
   }
-
-  /* ---------------- Chat demo ---------------- */
-  var chatLog = document.getElementById('chatLog');
-  var chatInput = document.getElementById('chatInput');
-  var chatSend = document.getElementById('chatSend');
-  var suggestChips = document.querySelectorAll('.suggest-chip');
-
-  var chatRules = [
-    { keys: ['แห้ง', 'ตึง', 'ลอก'], reply: 'สำหรับผิวแห้ง แนะนำมองหาส่วนผสม Hyaluronic Acid และ Ceramide ช่วยเติมและกักเก็บความชุ่มชื้น ควรทามอยส์เจอไรเซอร์ทันทีหลังล้างหน้าตอนผิวยังหมาดๆ ค่ะ' },
-    { keys: ['มัน', 'เงา', 'รูขุมขน'], reply: 'ผิวมันมักไปกับรูขุมขนกว้างและเงาไว แนะนำ Niacinamide หรือ BHA (Salicylic Acid) เพื่อควบคุมความมันแบบไม่ทำให้ผิวแห้งตึงจนเกินไปค่ะ' },
-    { keys: ['สิว', 'อุดตัน', 'สิวอักเสบ'], reply: 'สำหรับสิวอุดตัน BHA ช่วยทำความสะอาดรูขุมขนได้ดี ส่วนสิวอักเสบควรเพิ่มความอ่อนโยนของสูตรและปรึกษาแพทย์ผิวหนังหากเป็นต่อเนื่องนะคะ' },
-    { keys: ['แพ้', 'ระคายเคือง', 'บอบบาง'], reply: 'ผิวแพ้ง่ายควรเลี่ยงน้ำหอมและแอลกอฮอล์ แนะนำ Centella Asiatica และ Panthenol ที่ช่วยปลอบประโลมผิว และควรทดสอบผลิตภัณฑ์ใหม่ที่ท้องแขนก่อนใช้บนหน้าเสมอค่ะ' },
-    { keys: ['กันแดด', 'spf'], reply: 'แนะนำทาครีมกันแดดทุกวัน แม้อยู่ในร่ม เลือก SPF 30 ขึ้นไป และทาซ้ำทุก 2-3 ชั่วโมงหากอยู่กลางแจ้งนานค่ะ' },
-    { keys: ['niacinamide'], reply: 'Niacinamide ช่วยลดความมันส่วนเกิน กระชับรูขุมขน และช่วยให้สีผิวดูสม่ำเสมอขึ้น เหมาะกับเกือบทุกสภาพผิวค่ะ' },
-    { keys: ['aha', 'bha'], reply: 'AHA (เช่น Glycolic/Lactic Acid) ช่วยผลัดเซลล์ผิวชั้นบน เหมาะกับผิวหมองคล้ำ ส่วน BHA (Salicylic Acid) ละลายในน้ำมันได้ดี เหมาะกับผิวมัน/สิวอุดตันมากกว่าค่ะ' }
-  ];
-
-  function botReplyFor(text) {
-    var lower = text.toLowerCase();
-    for (var i = 0; i < chatRules.length; i++) {
-      var rule = chatRules[i];
-      for (var j = 0; j < rule.keys.length; j++) {
-        if (lower.indexOf(rule.keys[j]) !== -1) return rule.reply;
-      }
-    }
-    return 'ขอบคุณสำหรับคำถามค่ะ ตอนนี้ AI Chat อยู่ในเวอร์ชันตัวอย่าง ลองถามเกี่ยวกับสภาพผิว (แห้ง/มัน/สิว/แพ้ง่าย) หรือส่วนผสมอย่าง Niacinamide, AHA, BHA ได้เลยค่ะ';
-  }
-
-  function addBubble(text, who) {
-    var bubble = document.createElement('div');
-    bubble.className = 'chat-bubble ' + who;
-    bubble.textContent = text;
-    chatLog.appendChild(bubble);
-    chatLog.scrollTop = chatLog.scrollHeight;
-  }
-
-  function sendMessage(text) {
-    var trimmed = (text || '').trim();
-    if (!trimmed) return;
-
-    addBubble(trimmed, 'user');
-    chatInput.value = '';
-
-    // Small delay so the reply feels conversational rather than instant.
-    setTimeout(function () {
-      addBubble(botReplyFor(trimmed), 'bot');
-    }, 500);
-  }
-
-  if (chatSend) chatSend.addEventListener('click', function () { sendMessage(chatInput.value); });
-  if (chatInput) {
-    chatInput.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') sendMessage(chatInput.value);
-    });
-  }
-  suggestChips.forEach(function (chip) {
-    chip.addEventListener('click', function () { sendMessage(chip.textContent); });
-  });
 })();

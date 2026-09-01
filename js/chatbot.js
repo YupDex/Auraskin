@@ -1,20 +1,22 @@
 // ===================================================================
 // AuraSkin — chatbot.js
 // Connects the chat UI to a real AI backend (Cloudflare Worker proxy
-// to Gemini/OpenAI). Replace WORKER_URL below with your deployed
-// Worker endpoint.
+// to Gemini/OpenAI). Replace WORKER_URL below if you redeploy the
+// Worker at a different address.
 // ===================================================================
 
 (function () {
   'use strict';
 
-  // 🔧 Replace with your actual Cloudflare Worker URL
+  // 🔧 Your deployed Cloudflare Worker URL
   var WORKER_URL = 'https://auraskin-backbackend.54020.workers.dev/';
 
   var chatLog = document.getElementById('chatLog');
   var chatInput = document.getElementById('chatInput');
   var chatSend = document.getElementById('chatSend');
   var suggestChips = document.querySelectorAll('.suggest-chip');
+
+  if (!chatLog || !chatInput || !chatSend) return;
 
   function addBubble(text, who) {
     var bubble = document.createElement('div');
@@ -28,6 +30,7 @@
   function setLoading(isLoading) {
     chatSend.disabled = isLoading;
     chatInput.disabled = isLoading;
+    suggestChips.forEach(function (chip) { chip.disabled = isLoading; });
   }
 
   async function getAIReply(message) {
@@ -37,7 +40,8 @@
       body: JSON.stringify({ message: message })
     });
 
-    if (!res.ok) throw new Error('Network response was not ok');
+    if (!res.ok) throw new Error('Network response was not ok (' + res.status + ')');
+
     var data = await res.json();
     return data.reply || 'ขออภัยค่ะ ไม่สามารถประมวลผลคำตอบได้ในขณะนี้';
   }
@@ -61,15 +65,14 @@
     } finally {
       setLoading(false);
       chatLog.scrollTop = chatLog.scrollHeight;
+      chatInput.focus();
     }
   }
 
-  if (chatSend) chatSend.addEventListener('click', function () { sendMessage(chatInput.value); });
-  if (chatInput) {
-    chatInput.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') sendMessage(chatInput.value);
-    });
-  }
+  chatSend.addEventListener('click', function () { sendMessage(chatInput.value); });
+  chatInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') sendMessage(chatInput.value);
+  });
   suggestChips.forEach(function (chip) {
     chip.addEventListener('click', function () { sendMessage(chip.textContent); });
   });

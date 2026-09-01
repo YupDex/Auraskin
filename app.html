@@ -38,7 +38,7 @@
     </div>
 
     <p class="app-disclaimer">
-      หน้านี้เป็น <strong>ต้นแบบสาธิต (prototype)</strong> ผลวิเคราะห์และคำตอบแชทเป็นข้อมูลตัวอย่างสำหรับสาธิตการใช้งานเท่านั้น ยังไม่ได้เชื่อมต่อโมเดล AI จริงตามที่ระบุไว้ในหน้าโครงงาน (Google Teachable Machine / OpenAI API) — ไม่ใช่การวินิจฉัยโรคหรือทดแทนแพทย์
+      <strong>วิเคราะห์ผิว</strong> ยังเป็นข้อมูลตัวอย่างสำหรับสาธิตการใช้งาน (ยังไม่ได้เชื่อมต่อโมเดลวิเคราะห์ภาพ เช่น Google Teachable Machine) แต่ <strong>AI Chat</strong> เชื่อมต่อกับ AI จริงแล้ว — คำตอบทั้งสองส่วนเป็นการให้ข้อมูลเบื้องต้นเท่านั้น ไม่ใช่การวินิจฉัยโรคหรือทดแทนแพทย์
     </p>
 
     <div class="tabbar" role="tablist">
@@ -121,6 +121,7 @@
           <button class="suggest-chip" type="button">Niacinamide คืออะไร</button>
           <button class="suggest-chip" type="button">ผิวแพ้ง่าย ระคายเคือง</button>
         </div>
+        <p id="chatModeNote" class="chat-mode-note">โหมด: <b>เชื่อมต่อ AI จริง</b> — คำตอบมาจากผู้ช่วย AI ผ่าน Cloudflare Worker ของทีม อาจใช้เวลาสักครู่ในการตอบ</p>
         <div class="chat-input-row">
           <input type="text" id="chatInput" placeholder="พิมพ์คำถามเกี่ยวกับผิวของคุณ..." aria-label="พิมพ์ข้อความ">
           <button id="chatSend" class="chat-send" aria-label="ส่งข้อความ">➤</button>
@@ -137,5 +138,6 @@
 
 <script src="js/nav.js"></script>
 <script src="js/app.js"></script>
+<script src="js/chatbot.js"></script>
 </body>
 </html>
