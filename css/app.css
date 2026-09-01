@@ -163,6 +163,8 @@
    AuraSkin AI Markdown
    ================================================================ */
 
+/* ---------- Paragraphs ---------- */
+
 .chat-bubble.bot p {
   margin: 0 0 10px;
 }
@@ -171,9 +173,8 @@
   margin-bottom: 0;
 }
 
-/* ---------------------------------------------------------------
-   Bold / Italic
-   --------------------------------------------------------------- */
+
+/* ---------- Bold / Italic ---------- */
 
 .chat-bubble.bot strong {
   font-weight: 700;
@@ -183,16 +184,16 @@
   font-style: italic;
 }
 
-/* ---------------------------------------------------------------
-   Headings
-   --------------------------------------------------------------- */
+
+/* ---------- Headings ---------- */
 
 .chat-bubble.bot h1,
 .chat-bubble.bot h2,
 .chat-bubble.bot h3,
 .chat-bubble.bot h4 {
   line-height: 1.35;
-  margin: 12px 0 6px;
+  margin: 12px 0 7px;
+  color: var(--sage-deep);
 }
 
 .chat-bubble.bot h1 {
@@ -211,9 +212,8 @@
   font-size: 1rem;
 }
 
-/* ---------------------------------------------------------------
-   Lists
-   --------------------------------------------------------------- */
+
+/* ---------- Lists ---------- */
 
 .chat-bubble.bot ul,
 .chat-bubble.bot ol {
@@ -225,9 +225,8 @@
   margin: 3px 0;
 }
 
-/* ---------------------------------------------------------------
-   Blockquotes
-   --------------------------------------------------------------- */
+
+/* ---------- Blockquotes ---------- */
 
 .chat-bubble.bot blockquote {
   margin: 10px 0;
@@ -246,9 +245,8 @@
   margin: 0;
 }
 
-/* ---------------------------------------------------------------
-   Inline code
-   --------------------------------------------------------------- */
+
+/* ---------- Inline Code ---------- */
 
 .chat-bubble.bot code {
   padding: 2px 6px;
@@ -265,13 +263,14 @@
   font-size: 0.88em;
 }
 
-/* ---------------------------------------------------------------
-   Code blocks
-   --------------------------------------------------------------- */
+
+/* ---------- Code Blocks ---------- */
 
 .chat-bubble.bot pre {
   margin: 10px 0;
   padding: 12px 14px;
+
+  max-width: 100%;
 
   overflow-x: auto;
 
@@ -282,6 +281,8 @@
   color: #f6f4ee;
 
   line-height: 1.5;
+
+  white-space: pre;
 }
 
 .chat-bubble.bot pre code {
@@ -292,9 +293,8 @@
   color: inherit;
 }
 
-/* ---------------------------------------------------------------
-   Links
-   --------------------------------------------------------------- */
+
+/* ---------- Links ---------- */
 
 .chat-bubble.bot a {
   color: var(--sage-deep);
@@ -302,15 +302,16 @@
   font-weight: 600;
 
   text-decoration: underline;
+
+  overflow-wrap: anywhere;
 }
 
 .chat-bubble.bot a:hover {
   color: var(--sage);
 }
 
-/* ---------------------------------------------------------------
-   Horizontal rule
-   --------------------------------------------------------------- */
+
+/* ---------- Horizontal Rule ---------- */
 
 .chat-bubble.bot hr {
   margin: 12px 0;
@@ -320,18 +321,21 @@
   border-top: 1px solid var(--line);
 }
 
-/* ---------------------------------------------------------------
-   Tables
-   --------------------------------------------------------------- */
+
+/* ---------- Tables ---------- */
 
 .chat-bubble.bot table {
   width: 100%;
+  max-width: 100%;
 
   margin: 10px 0;
 
   border-collapse: collapse;
 
   font-size: 0.88rem;
+
+  /* Prevent the table from expanding the bubble. */
+  table-layout: fixed;
 }
 
 .chat-bubble.bot th,
@@ -341,6 +345,12 @@
   border: 1px solid var(--line);
 
   text-align: left;
+
+  vertical-align: top;
+
+  /* Prevent long Thai/English text from escaping. */
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .chat-bubble.bot th {
@@ -349,18 +359,28 @@
   font-weight: 700;
 }
 
-/* ---------------------------------------------------------------
-   Long content
-   --------------------------------------------------------------- */
 
-.chat-bubble.bot pre {
-  max-width: 100%;
-
-  white-space: pre;
-}
+/* ---------- Images ---------- */
 
 .chat-bubble.bot img {
   max-width: 100%;
 
+  height: auto;
+
   border-radius: 8px;
+}
+
+
+/* ---------- General Markdown Safety ---------- */
+
+.chat-bubble.bot {
+  overflow-wrap: anywhere;
+}
+
+.chat-bubble.bot > *:first-child {
+  margin-top: 0;
+}
+
+.chat-bubble.bot > *:last-child {
+  margin-bottom: 0;
 }
