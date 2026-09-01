@@ -9,7 +9,7 @@
   'use strict';
 
   // 🔧 Replace with your actual Cloudflare Worker URL
-  var WORKER_URL = 'https://auraskin-backbackend.54020.workers.dev';
+  var WORKER_URL = 'https://auraskin-backbackend.54020.workers.dev/';
 
   var chatLog = document.getElementById('chatLog');
   var chatInput = document.getElementById('chatInput');
