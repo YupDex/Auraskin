@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>คุยกับ AI ผู้ช่วย — AuraSkin</title>
+<meta name="description" content="พูดคุยกับ AI ผู้ช่วยด้านการดูแลผิวของ AuraSkin ถามเรื่องสภาพผิวและส่วนผสมได้แบบเรียลไทม์">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="brand"><span class="mark"></span>AuraSkin</a>
+    <button class="nav-toggle" aria-label="เปิดเมนู" aria-expanded="false"><span></span></button>
+    <ul class="nav-links">
+      <li><a href="index.html#problem">ที่มาโครงงาน</a></li>
+      <li><a href="index.html#solution">แนวคิด</a></li>
+      <li><a href="index.html#team">ทีม</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="app.html" class="nav-app-link ghost">← กลับหน้าแอป</a>
+    </div>
+  </div>
+</nav>
+
+<main class="app-main">
+  <div class="wrap">
+
+    <div class="app-head">
+      <div class="kicker">AI ผู้ช่วยด้านผิว</div>
+      <h1>คุยกับ AI ผู้ช่วย AuraSkin</h1>
+      <p>ถามคำถามเกี่ยวกับสภาพผิว ส่วนผสม หรือวิธีดูแลผิวของคุณ ได้แบบเรียลไทม์</p>
+    </div>
+
+    <p class="app-disclaimer">
+      หน้านี้เชื่อมต่อกับโมเดล AI จริงเพื่อสาธิตการสนทนา คำตอบที่ได้เป็นข้อมูลทั่วไปเพื่อการศึกษาเท่านั้น ไม่ใช่การวินิจฉัยทางการแพทย์หรือคำแนะนำจากแพทย์ผิวหนัง
+    </p>
+
+    <!-- ================= CHAT PANEL ================= -->
+    <div class="chat-shell" style="max-width:720px;margin:0 auto;">
+      <div id="chatLog" class="chat-log">
+        <div class="chat-bubble bot">สวัสดีค่ะ ถามเรื่องสภาพผิวหรือส่วนผสมที่อยากรู้ได้เลยค่ะ เช่น ผิวแห้ง ผิวมัน สิว หรือ Niacinamide</div>
+      </div>
+      <div class="chat-suggest">
+        <button class="suggest-chip" type="button">ผิวแห้งควรดูแลยังไง</button>
+        <button class="suggest-chip" type="button">ผิวมันเป็นสิวอุดตัน</button>
+        <button class="suggest-chip" type="button">Niacinamide คืออะไร</button>
+        <button class="suggest-chip" type="button">ผิวแพ้ง่าย ระคายเคือง</button>
+      </div>
+      <div class="chat-input-row">
+        <input type="text" id="chatInput" placeholder="พิมพ์คำถามเกี่ยวกับผิวของคุณ..." aria-label="พิมพ์ข้อความ">
+        <button id="chatSend" class="chat-send" aria-label="ส่งข้อความ">➤</button>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  AuraSkin · เว็บแอปตัวอย่าง — โครงงาน Team 14 · <a href="index.html">ดูรายละเอียดโครงงาน</a>
+</footer>
+
+<script src="js/nav.js"></script>
+<script src="js/chatbot.js"></script>
+</body>
+</html>
