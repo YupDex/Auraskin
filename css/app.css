@@ -1,160 +1,205 @@
-/* ===================================================================
-   AuraSkin — app.css
-   Styles specific to the working demo app (app.html): skin analysis
-   upload flow and the AI chat assistant.
-   =================================================================== */
+/* ================================================================
+   AuraSkin AI Markdown
+   ================================================================ */
 
-.app-main{padding:48px 0 96px;}
-
-.app-head{max-width:640px;margin-bottom:8px;}
-.app-head .kicker{color:var(--sage);font-weight:600;font-size:0.92rem;margin-bottom:8px;}
-.app-head h1{font-size:2rem;font-weight:700;}
-.app-head p{margin-top:12px;color:var(--ink-soft);}
-
-.app-disclaimer{
-  margin:22px 0 36px;font-size:0.86rem;color:var(--ink-soft);
-  border-left:3px solid var(--clay);padding:12px 16px;
-  background:var(--clay-mist);border-radius:0 10px 10px 0;
+.chat-bubble.bot p {
+  margin: 0 0 10px;
 }
 
-/* ---------- tabs ---------- */
-.tabbar{
-  display:inline-flex;gap:4px;background:var(--sage-mist);
-  border-radius:100px;padding:4px;margin-bottom:36px;
-}
-.tab-btn{
-  border:none;background:transparent;color:var(--sage-deep);
-  font-family:inherit;font-weight:600;font-size:0.92rem;
-  padding:10px 20px;border-radius:100px;cursor:pointer;
-}
-.tab-btn.active{background:var(--sage-deep);color:#fff;}
-.tab-btn:not(.active):hover{background:rgba(255,255,255,0.6);}
-
-.tab-panel{display:none;}
-.tab-panel.active{display:block;}
-
-/* ---------- analyze panel ---------- */
-.analyze-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;}
-
-.upload-card{
-  background:var(--paper);border:1px solid var(--line);border-radius:20px;
-  padding:26px;
-}
-.dropzone{
-  border:1.5px dashed var(--sage-mid);border-radius:16px;
-  padding:36px 20px;text-align:center;cursor:pointer;
-  background:var(--sage-mist);transition:background .15s ease, border-color .15s ease;
-}
-.dropzone:hover,.dropzone.drag-over{background:#dcebe1;border-color:var(--sage-deep);}
-.dropzone .dz-icon{font-size:1.8rem;margin-bottom:10px;color:var(--sage-deep);}
-.dropzone .dz-title{font-weight:600;color:var(--sage-deep);margin-bottom:4px;}
-.dropzone .dz-sub{font-size:0.85rem;color:var(--ink-soft);}
-.dropzone input[type=file]{display:none;}
-
-.preview-wrap{margin-top:18px;display:none;}
-.preview-wrap.show{display:block;}
-.preview-frame{
-  border-radius:14px;overflow:hidden;border:1px solid var(--line);
-  aspect-ratio:1/1;background:var(--sage-mist);
-}
-.preview-frame img{width:100%;height:100%;object-fit:cover;}
-.preview-name{margin-top:10px;font-size:0.85rem;color:var(--ink-soft);word-break:break-all;}
-
-.upload-actions{display:flex;gap:12px;margin-top:20px;}
-.upload-actions .btn{flex:1;text-align:center;}
-
-.result-card{
-  background:var(--paper);border:1px solid var(--line);border-radius:20px;
-  padding:26px;min-height:100%;
-}
-.result-empty{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;color:var(--ink-soft);padding:48px 20px;gap:10px;
-}
-.result-empty .re-icon{font-size:1.8rem;color:var(--sage-mid);}
-.result-empty p{margin:0;font-size:0.92rem;max-width:32ch;}
-
-.result-loading{display:none;flex-direction:column;align-items:center;justify-content:center;padding:48px 20px;gap:14px;color:var(--ink-soft);}
-.result-loading.show{display:flex;}
-.spinner{
-  width:34px;height:34px;border-radius:50%;
-  border:3px solid var(--sage-mist);border-top-color:var(--sage-deep);
-  animation:spin .8s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg);}}
-
-.result-body{display:none;}
-.result-body.show{display:block;}
-.result-row{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:12px 0;border-bottom:1px solid var(--line);font-size:0.94rem;
-}
-.result-row:last-of-type{border-bottom:none;}
-.result-row span{color:var(--ink-soft);}
-.result-row b{color:var(--ink);font-family:'Prompt';}
-
-.score-bar-track{background:var(--sage-mist);border-radius:100px;height:8px;overflow:hidden;margin-top:6px;}
-.score-bar-fill{background:var(--sage-deep);height:100%;border-radius:100px;transition:width .6s ease;}
-
-.chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
-.chip{
-  background:var(--sage-mist);color:var(--sage-deep);font-size:0.82rem;font-weight:600;
-  padding:6px 12px;border-radius:100px;
+.chat-bubble.bot p:last-child {
+  margin-bottom: 0;
 }
 
-.product-card{
-  margin-top:20px;display:flex;gap:14px;align-items:center;
-  background:var(--sage-mist);border-radius:14px;padding:14px 16px;
-}
-.product-swatch{
-  flex:none;width:44px;height:44px;border-radius:10px;
-  background:linear-gradient(160deg,var(--sage-mid),var(--sage-deep));
-}
-.product-card h4{margin:0 0 2px;font-size:0.92rem;font-weight:600;color:var(--ink);}
-.product-card p{margin:0;font-size:0.8rem;color:var(--ink-soft);}
+/* ---------------------------------------------------------------
+   Bold / Italic
+   --------------------------------------------------------------- */
 
-.result-note{margin-top:20px;font-size:0.78rem;color:var(--ink-soft);}
+.chat-bubble.bot strong {
+  font-weight: 700;
+}
 
-/* ---------- chat panel ---------- */
-.chat-shell{
-  background:var(--paper);border:1px solid var(--line);border-radius:20px;
-  overflow:hidden;max-width:640px;
+.chat-bubble.bot em {
+  font-style: italic;
 }
-.chat-log{
-  height:420px;overflow-y:auto;padding:22px;
-  display:flex;flex-direction:column;gap:12px;
-}
-.chat-bubble{border-radius:14px;padding:11px 15px;font-size:0.92rem;max-width:80%;line-height:1.55;}
-.chat-bubble.user{align-self:flex-end;background:var(--sage-deep);color:#fff;border-bottom-right-radius:3px;}
-.chat-bubble.bot{align-self:flex-start;background:var(--sage-mist);color:var(--ink);border-bottom-left-radius:3px;}
 
-.chat-suggest{display:flex;flex-wrap:wrap;gap:8px;padding:0 22px 16px;}
-.suggest-chip{
-  border:1px solid var(--sage-mid);background:var(--paper);color:var(--sage-deep);
-  font-size:0.82rem;font-weight:600;padding:7px 14px;border-radius:100px;
-  cursor:pointer;font-family:inherit;
-}
-.suggest-chip:hover{background:var(--sage-mist);}
+/* ---------------------------------------------------------------
+   Headings
+   --------------------------------------------------------------- */
 
-.chat-input-row{
-  display:flex;gap:10px;padding:16px 18px;border-top:1px solid var(--line);
-  background:var(--paper);
+.chat-bubble.bot h1,
+.chat-bubble.bot h2,
+.chat-bubble.bot h3,
+.chat-bubble.bot h4 {
+  line-height: 1.35;
+  margin: 12px 0 6px;
 }
-.chat-input-row input{
-  flex:1;border:1px solid var(--line);border-radius:100px;
-  padding:12px 18px;font-family:inherit;font-size:0.92rem;color:var(--ink);
-  background:var(--cream);
-}
-.chat-input-row input:focus-visible{outline:2px solid var(--sage-deep);outline-offset:2px;}
-.chat-send{
-  flex:none;width:44px;height:44px;border-radius:50%;
-  background:var(--sage-deep);color:#fff;border:none;cursor:pointer;
-  font-size:1.05rem;display:flex;align-items:center;justify-content:center;
-}
-.chat-send:hover{background:var(--sage);}
-.chat-send:disabled{opacity:0.5;cursor:not-allowed;}
 
-@media (max-width:860px){
-  .analyze-grid{grid-template-columns:1fr;}
-  .chat-log{height:360px;}
+.chat-bubble.bot h1 {
+  font-size: 1.35rem;
+}
+
+.chat-bubble.bot h2 {
+  font-size: 1.2rem;
+}
+
+.chat-bubble.bot h3 {
+  font-size: 1.05rem;
+}
+
+.chat-bubble.bot h4 {
+  font-size: 1rem;
+}
+
+/* ---------------------------------------------------------------
+   Lists
+   --------------------------------------------------------------- */
+
+.chat-bubble.bot ul,
+.chat-bubble.bot ol {
+  margin: 8px 0;
+  padding-left: 22px;
+}
+
+.chat-bubble.bot li {
+  margin: 3px 0;
+}
+
+/* ---------------------------------------------------------------
+   Blockquotes
+   --------------------------------------------------------------- */
+
+.chat-bubble.bot blockquote {
+  margin: 10px 0;
+  padding: 7px 12px;
+
+  border-left: 3px solid var(--sage-deep);
+
+  background: rgba(255, 255, 255, 0.4);
+
+  color: var(--ink-soft);
+
+  border-radius: 0 8px 8px 0;
+}
+
+.chat-bubble.bot blockquote p {
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------
+   Inline code
+   --------------------------------------------------------------- */
+
+.chat-bubble.bot code {
+  padding: 2px 6px;
+
+  border-radius: 5px;
+
+  background: rgba(35, 58, 49, 0.09);
+
+  font-family:
+    Consolas,
+    "Courier New",
+    monospace;
+
+  font-size: 0.88em;
+}
+
+/* ---------------------------------------------------------------
+   Code blocks
+   --------------------------------------------------------------- */
+
+.chat-bubble.bot pre {
+  margin: 10px 0;
+  padding: 12px 14px;
+
+  overflow-x: auto;
+
+  border-radius: 10px;
+
+  background: #23312b;
+
+  color: #f6f4ee;
+
+  line-height: 1.5;
+}
+
+.chat-bubble.bot pre code {
+  padding: 0;
+
+  background: transparent;
+
+  color: inherit;
+}
+
+/* ---------------------------------------------------------------
+   Links
+   --------------------------------------------------------------- */
+
+.chat-bubble.bot a {
+  color: var(--sage-deep);
+
+  font-weight: 600;
+
+  text-decoration: underline;
+}
+
+.chat-bubble.bot a:hover {
+  color: var(--sage);
+}
+
+/* ---------------------------------------------------------------
+   Horizontal rule
+   --------------------------------------------------------------- */
+
+.chat-bubble.bot hr {
+  margin: 12px 0;
+
+  border: none;
+
+  border-top: 1px solid var(--line);
+}
+
+/* ---------------------------------------------------------------
+   Tables
+   --------------------------------------------------------------- */
+
+.chat-bubble.bot table {
+  width: 100%;
+
+  margin: 10px 0;
+
+  border-collapse: collapse;
+
+  font-size: 0.88rem;
+}
+
+.chat-bubble.bot th,
+.chat-bubble.bot td {
+  padding: 7px 9px;
+
+  border: 1px solid var(--line);
+
+  text-align: left;
+}
+
+.chat-bubble.bot th {
+  background: rgba(255, 255, 255, 0.45);
+
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------------
+   Long content
+   --------------------------------------------------------------- */
+
+.chat-bubble.bot pre {
+  max-width: 100%;
+
+  white-space: pre;
+}
+
+.chat-bubble.bot img {
+  max-width: 100%;
+
+  border-radius: 8px;
 }
