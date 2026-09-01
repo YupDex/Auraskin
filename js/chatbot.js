@@ -36,11 +36,9 @@
   // ================================================================
   // TEMPORARY CHAT MEMORY
   //
-  // This exists only in RAM.
+  // This is stored only in browser memory.
   //
-  // Refresh page:
-  //     chatHistory = []
-  //
+  // Refreshing the page resets the conversation.
   // No localStorage.
   // No cookies.
   // No database.
@@ -54,14 +52,16 @@
 
   function escapeHTML(text) {
     var div = document.createElement('div');
+
     div.textContent = text || '';
+
     return div.innerHTML;
   }
 
   function renderMarkdown(text) {
     text = text || '';
 
-    // Fallback if the CDN libraries failed to load.
+    // Fallback if Markdown libraries aren't available.
     if (
       typeof marked === 'undefined' ||
       typeof DOMPurify === 'undefined'
@@ -91,7 +91,7 @@
     bubble.className = 'chat-bubble ' + who;
 
     if (who === 'bot') {
-      // AI messages support Markdown.
+      // AI responses support Markdown.
       bubble.innerHTML = renderMarkdown(text);
     } else {
       // User messages remain plain text.
@@ -133,7 +133,8 @@
       body: JSON.stringify({
         message: message,
 
-        // Send previous conversation to Worker.
+        // IMPORTANT:
+        // This contains only messages BEFORE the current message.
         history: chatHistory
       })
     });
@@ -170,22 +171,20 @@
     }
 
     // --------------------------------------------------------------
-    // Show user message
+    // Display user message
     // --------------------------------------------------------------
 
     addBubble(trimmed, 'user');
 
-    // --------------------------------------------------------------
-    // Save user message
-    // --------------------------------------------------------------
-
-    chatHistory.push({
-      role: 'user',
-      content: trimmed
-    });
-
-    // --------------------------------------------------------------
-    // Clear input
+    // IMPORTANT:
+    // Do NOT add this message to chatHistory yet.
+    //
+    // The Worker receives:
+    //
+    // history = previous messages
+    // message = current message
+    //
+    // This prevents the current message from being duplicated.
     // --------------------------------------------------------------
 
     chatInput.value = '';
@@ -193,7 +192,7 @@
     setLoading(true);
 
     // --------------------------------------------------------------
-    // Temporary typing bubble
+    // Temporary loading bubble
     // --------------------------------------------------------------
 
     var typingBubble = addBubble(
@@ -202,15 +201,21 @@
     );
 
     try {
+
       // ------------------------------------------------------------
-      // Ask Worker
+      // Ask AI
       // ------------------------------------------------------------
 
       var reply = await getAIReply(trimmed);
 
       // ------------------------------------------------------------
-      // Save AI response
+      // Save successful conversation
       // ------------------------------------------------------------
+
+      chatHistory.push({
+        role: 'user',
+        content: trimmed
+      });
 
       chatHistory.push({
         role: 'assistant',
@@ -218,34 +223,32 @@
       });
 
       // ------------------------------------------------------------
-      // Replace typing bubble with Markdown-rendered response
+      // Render COMPLETE response as Markdown
+      //
+      // IMPORTANT:
+      // We only parse Markdown after the entire response arrives.
+      // This prevents incomplete tables / **bold / code blocks
+      // from being interpreted while the AI response is incomplete.
       // ------------------------------------------------------------
 
       typingBubble.innerHTML = renderMarkdown(reply);
 
     } catch (error) {
-      console.error('AuraSkin AI error:', error);
+
+      console.error(
+        'AuraSkin AI error:',
+        error
+      );
 
       typingBubble.textContent =
         'ขออภัยค่ะ เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง';
 
-      // ------------------------------------------------------------
-      // The user message was already added to history.
-      //
-      // Remove it because the AI never successfully answered.
-      // ------------------------------------------------------------
-
-      if (
-        chatHistory.length > 0 &&
-        chatHistory[chatHistory.length - 1].role === 'user'
-      ) {
-        chatHistory.pop();
-      }
-
     } finally {
+
       setLoading(false);
 
-      chatLog.scrollTop = chatLog.scrollHeight;
+      chatLog.scrollTop =
+        chatLog.scrollHeight;
 
       chatInput.focus();
     }
@@ -255,30 +258,49 @@
   // SEND BUTTON
   // ================================================================
 
-  chatSend.addEventListener('click', function () {
-    sendMessage(chatInput.value);
-  });
+  chatSend.addEventListener(
+    'click',
+    function () {
+      sendMessage(chatInput.value);
+    }
+  );
 
   // ================================================================
   // ENTER KEY
   // ================================================================
 
-  chatInput.addEventListener('keydown', function (event) {
-    if (event.key === 'Enter') {
-      event.preventDefault();
+  chatInput.addEventListener(
+    'keydown',
+    function (event) {
 
-      sendMessage(chatInput.value);
+      if (event.key === 'Enter') {
+
+        event.preventDefault();
+
+        sendMessage(chatInput.value);
+      }
     }
-  });
+  );
 
   // ================================================================
   // SUGGESTION CHIPS
   // ================================================================
 
-  suggestChips.forEach(function (chip) {
-    chip.addEventListener('click', function () {
-      sendMessage(chip.textContent);
-    });
-  });
+  suggestChips.forEach(
+    function (chip) {
+
+      chip.addEventListener(
+        'click',
+        function () {
+
+          sendMessage(
+            chip.textContent
+          );
+
+        }
+      );
+
+    }
+  );
 
 })();
