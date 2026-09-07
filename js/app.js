@@ -1,7 +1,6 @@
 // ===================================================================
 // AuraSkin — app.js
 // Photo upload + AI vision skin analysis through the AuraSkin Worker.
-// The analysis is an AI-assisted visual estimate, not a medical diagnosis.
 // ===================================================================
 
 (function () {
@@ -15,8 +14,13 @@
     btn.addEventListener('click', function () {
       var target = btn.getAttribute('data-tab');
 
-      tabButtons.forEach(function (b) { b.classList.remove('active'); });
-      tabPanels.forEach(function (p) { p.classList.remove('active'); });
+      tabButtons.forEach(function (b) {
+        b.classList.remove('active');
+      });
+
+      tabPanels.forEach(function (p) {
+        p.classList.remove('active');
+      });
 
       btn.classList.add('active');
       document.getElementById(target).classList.add('active');
@@ -24,6 +28,7 @@
   });
 
   /* ---------------- Photo upload + preview ---------------- */
+
   var WORKER_URL =
     'https://auraskin-backbackend.54020.workers.dev/';
 
@@ -39,9 +44,10 @@
   var resultLoading = document.getElementById('resultLoading');
   var resultBody = document.getElementById('resultBody');
 
-  // Keep uploads comfortably below Groq's image request limit.
-  var MAX_IMAGE_DIMENSION = 1600;
-  var JPEG_QUALITY = 0.82;
+  // Keep the base64 image comfortably small.
+  // This also makes mobile uploads much more reliable.
+  var MAX_IMAGE_DIMENSION = 1200;
+  var JPEG_QUALITY = 0.72;
 
   var currentImageData = '';
 
@@ -60,7 +66,7 @@
         analyzeBtn.disabled = false;
       })
       .catch(function (error) {
-        console.error('AuraSkin image error:', error);
+        console.error('AuraSkin image preparation error:', error);
         alert('ไม่สามารถเตรียมภาพได้ กรุณาลองภาพอื่น');
       });
   }
@@ -81,19 +87,32 @@
         };
 
         img.onload = function () {
-          var scale = Math.min(
-            1,
-            MAX_IMAGE_DIMENSION / Math.max(img.naturalWidth, img.naturalHeight)
+          var largestSide = Math.max(
+            img.naturalWidth,
+            img.naturalHeight
           );
 
-          var width = Math.max(1, Math.round(img.naturalWidth * scale));
-          var height = Math.max(1, Math.round(img.naturalHeight * scale));
+          var scale = Math.min(
+            1,
+            MAX_IMAGE_DIMENSION / largestSide
+          );
+
+          var width = Math.max(
+            1,
+            Math.round(img.naturalWidth * scale)
+          );
+
+          var height = Math.max(
+            1,
+            Math.round(img.naturalHeight * scale)
+          );
 
           var canvas = document.createElement('canvas');
           canvas.width = width;
           canvas.height = height;
 
           var ctx = canvas.getContext('2d');
+
           if (!ctx) {
             reject(new Error('Canvas is unavailable'));
             return;
@@ -104,6 +123,12 @@
           var dataUrl = canvas.toDataURL(
             'image/jpeg',
             JPEG_QUALITY
+          );
+
+          console.log(
+            'AuraSkin image prepared:',
+            width + 'x' + height,
+            Math.round(dataUrl.length / 1024) + ' KB'
           );
 
           resolve(dataUrl);
@@ -161,6 +186,10 @@
     analyzeBtn.disabled = true;
 
     try {
+      console.log(
+        'AuraSkin: sending image to Worker...'
+      );
+
       var response = await fetch(WORKER_URL, {
         method: 'POST',
         headers: {
@@ -168,21 +197,49 @@
         },
         body: JSON.stringify({
           message:
-            'วิเคราะห์ภาพผิวนี้สำหรับ AuraSkin โดยประเมินสภาพผิวและสิ่งที่สังเกตได้อย่างระมัดระวัง ไม่วินิจฉัยโรค และส่งผลลัพธ์ตามฟิลด์ที่ระบบกำหนด',
+            'วิเคราะห์ภาพผิวนี้สำหรับ AuraSkin โดยประเมินสภาพผิวและสิ่งที่สังเกตได้อย่างระมัดระวัง ไม่วินิจฉัยโรค และส่งผลลัพธ์เป็น JSON ตามฟิลด์ที่ระบบกำหนด',
           image: currentImageData
         })
       });
 
-      var data = await response.json();
+      var rawText = await response.text();
+      var data;
+
+      try {
+        data = JSON.parse(rawText);
+      } catch (jsonError) {
+        console.error(
+          'AuraSkin Worker returned non-JSON:',
+          rawText
+        );
+        throw new Error(
+          'Worker returned invalid JSON (HTTP ' +
+            response.status + ')'
+        );
+      }
+
+      console.log(
+        'AuraSkin Worker response:',
+        response.status,
+        data
+      );
 
       if (!response.ok || data.error) {
+        var workerDetails =
+          data.details || data.error || 'Unknown Worker error';
+
         throw new Error(
-          data.error || 'Vision analysis failed'
+          'HTTP ' +
+            response.status +
+            ': ' +
+            workerDetails
         );
       }
 
       if (!data.analysis) {
-        throw new Error('No analysis returned');
+        throw new Error(
+          'Worker returned no analysis.'
+        );
       }
 
       fillResult(data.analysis);
@@ -191,13 +248,19 @@
       resultBody.classList.add('show');
 
     } catch (error) {
-      console.error('AuraSkin AI vision error:', error);
+      console.error(
+        'AuraSkin AI vision error:',
+        error
+      );
 
       resultLoading.classList.remove('show');
       resultEmpty.style.display = 'flex';
 
+      // Show the real error while debugging instead of hiding it.
+      // This makes Cloudflare/Groq errors visible immediately.
       alert(
-        'ขออภัยค่ะ ไม่สามารถวิเคราะห์ภาพได้ในขณะนี้ กรุณาลองใหม่อีกครั้ง'
+        'AuraSkin วิเคราะห์ภาพไม่สำเร็จ\n\n' +
+        (error.message || error)
       );
 
     } finally {
@@ -209,22 +272,34 @@
     var skinType =
       p.skinType || 'ข้อมูลไม่เพียงพอ';
 
+    // Worker uses "concern".
+    // Keep "mainConcern" as a compatibility fallback.
     var concern =
-      p.mainConcern || 'ไม่สามารถประเมินได้อย่างชัดเจน';
+      p.concern ||
+      p.mainConcern ||
+      'ไม่สามารถประเมินได้อย่างชัดเจน';
 
     var confidence = Number(p.confidence);
+
     if (!Number.isFinite(confidence)) {
       confidence = 0;
     }
 
-    confidence = Math.max(0, Math.min(100, confidence));
+    confidence = Math.max(
+      0,
+      Math.min(100, confidence)
+    );
 
     var score = Number(p.score);
+
     if (!Number.isFinite(score)) {
       score = confidence;
     }
 
-    score = Math.max(0, Math.min(100, score));
+    score = Math.max(
+      0,
+      Math.min(100, score)
+    );
 
     document.getElementById('resSkinType').textContent =
       skinType;
@@ -253,15 +328,14 @@
 
     ingredients.forEach(function (ing) {
       var chip = document.createElement('span');
-
       chip.className = 'chip';
       chip.textContent = String(ing);
-
       chipRow.appendChild(chip);
     });
 
     document.getElementById('resProductName').textContent =
-      p.productName || 'ยังไม่มีคำแนะนำผลิตภัณฑ์';
+      p.productName ||
+      'ยังไม่มีคำแนะนำผลิตภัณฑ์';
 
     document.getElementById('resProductDesc').textContent =
       p.productDesc ||
@@ -290,5 +364,4 @@
       resultEmpty.style.display = 'flex';
     });
   }
-
 })();
