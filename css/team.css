@@ -1,0 +1,210 @@
+/* AuraSkin — contributor photo lightbox */
+
+.team-avatar.team-photo-viewable {
+  position: relative;
+  cursor: zoom-in;
+  outline: none;
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+
+.team-photo-viewable::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 1px solid rgba(43,183,168,.18);
+  pointer-events: none;
+  transition: inset .22s ease, border-color .22s ease;
+}
+
+.team-photo-viewable:hover,
+.team-photo-viewable:focus-visible {
+  transform: scale(1.06);
+  box-shadow: 0 12px 28px -12px rgba(17,107,99,.65);
+}
+
+.team-photo-viewable:hover::after,
+.team-photo-viewable:focus-visible::after {
+  inset: -7px;
+  border-color: rgba(43,183,168,.45);
+}
+
+.team-photo-hint {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(16,43,42,.62);
+  color: #fff;
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+  opacity: 0;
+  transition: opacity .2s ease;
+  pointer-events: none;
+}
+
+.team-photo-viewable:hover .team-photo-hint,
+.team-photo-viewable:focus-visible .team-photo-hint {
+  opacity: 1;
+}
+
+.team-lightbox[hidden] {
+  display: none;
+}
+
+.team-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.team-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 25, 25, .72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: teamLightboxFade .2s ease both;
+}
+
+.team-lightbox-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(920px, 100%);
+  max-height: min(92vh, 900px);
+  overflow: auto;
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 28px;
+  padding: 18px;
+  background: rgba(245, 252, 251, .96);
+  box-shadow: 0 30px 90px rgba(0,0,0,.32);
+  animation: teamLightboxIn .22s ease both;
+}
+
+.team-lightbox-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(16,43,42,.12);
+  border-radius: 50%;
+  background: rgba(255,255,255,.88);
+  color: #163d3a;
+  font: inherit;
+  font-size: 1.55rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(16,43,42,.12);
+}
+
+.team-lightbox-close:hover,
+.team-lightbox-close:focus-visible {
+  background: #fff;
+  outline: 2px solid rgba(43,183,168,.55);
+  outline-offset: 2px;
+}
+
+.team-lightbox-image-wrap {
+  display: grid;
+  place-items: center;
+  min-height: 240px;
+  padding: 12px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(43,183,168,.10), rgba(142,124,255,.10));
+}
+
+.team-lightbox-image {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: min(70vh, 720px);
+  object-fit: contain;
+  border-radius: 16px;
+}
+
+.team-lightbox-info {
+  padding: 18px 8px 4px;
+  text-align: center;
+}
+
+.team-lightbox-kicker {
+  margin-bottom: 4px;
+  color: #43817a;
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
+.team-lightbox-info h3 {
+  margin: 0;
+  color: #163d3a;
+  font-size: clamp(1.25rem, 3vw, 1.8rem);
+}
+
+.team-lightbox-role {
+  margin: 5px 0 2px;
+  color: #4f6966;
+}
+
+.team-lightbox-grade {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(43,183,168,.10);
+  color: #35746e;
+  font-size: .78rem;
+  font-weight: 600;
+}
+
+.team-lightbox-open {
+  overflow: hidden;
+}
+
+@keyframes teamLightboxFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes teamLightboxIn {
+  from { opacity: 0; transform: translateY(10px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 640px) {
+  .team-lightbox {
+    padding: 12px;
+  }
+
+  .team-lightbox-dialog {
+    border-radius: 22px;
+    padding: 12px;
+  }
+
+  .team-lightbox-image-wrap {
+    padding: 8px;
+  }
+
+  .team-lightbox-image {
+    max-height: 64vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-photo-viewable,
+  .team-photo-viewable::after,
+  .team-photo-hint,
+  .team-lightbox-backdrop,
+  .team-lightbox-dialog {
+    transition: none;
+    animation: none;
+  }
+}
