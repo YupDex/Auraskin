@@ -175,3 +175,80 @@ section:not(.hero)::after{content:"✦";display:block;text-align:right;max-width
   object-fit: cover;
   object-position: center;
 }
+
+/* ---------- clickable team photos ---------- */
+.team-avatar-editable {
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+
+.team-avatar-editable::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 1px solid rgba(43,183,168,.18);
+  pointer-events: none;
+  transition: inset .22s ease, border-color .22s ease;
+}
+
+.team-avatar-editable:hover,
+.team-avatar-editable:focus-visible {
+  transform: scale(1.07);
+  box-shadow: 0 12px 28px -12px rgba(17,107,99,.65);
+}
+
+.team-avatar-editable:hover::after,
+.team-avatar-editable:focus-visible::after {
+  inset: -7px;
+  border-color: rgba(43,183,168,.45);
+}
+
+.team-avatar-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  background: rgba(16,43,42,.68);
+  color: #fff;
+  font-size: .53rem;
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: .01em;
+  opacity: 0;
+  transition: opacity .2s ease;
+  pointer-events: none;
+}
+
+.team-avatar-editable:hover .team-avatar-overlay,
+.team-avatar-editable:focus-visible .team-avatar-overlay {
+  opacity: 1;
+}
+
+.team-avatar-camera {
+  font-size: .85rem;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.team-avatar-editable img {
+  transition: filter .2s ease;
+}
+
+.team-avatar-editable:hover img,
+.team-avatar-editable:focus-visible img {
+  filter: brightness(.82);
+}
+
+@media (prefers-reduced-motion:reduce){
+  .team-avatar-editable,
+  .team-avatar-editable::after,
+  .team-avatar-overlay,
+  .team-avatar-editable img{transition:none;}
+}
