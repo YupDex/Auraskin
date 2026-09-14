@@ -6,6 +6,15 @@ document.addEventListener('DOMContentLoaded', function () {
   var avatars = document.querySelectorAll('#team .team-avatar');
   if (!avatars.length) return;
 
+  // Load the feature stylesheet without requiring changes to the main HTML file.
+  if (!document.querySelector('link[data-team-lightbox-css]')) {
+    var styleLink = document.createElement('link');
+    styleLink.rel = 'stylesheet';
+    styleLink.href = 'css/team.css';
+    styleLink.setAttribute('data-team-lightbox-css', 'true');
+    document.head.appendChild(styleLink);
+  }
+
   var lightbox = document.createElement('div');
   lightbox.className = 'team-lightbox';
   lightbox.id = 'team-lightbox';
