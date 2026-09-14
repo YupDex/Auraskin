@@ -13,44 +13,32 @@ document.addEventListener('DOMContentLoaded', function () {
     var key = 'auraskin-team-photo-' + index;
     var originalSrc = img.getAttribute('src');
 
-    // Restore the last local preview, if one exists.
     try {
       var saved = localStorage.getItem(key);
       if (saved) img.src = saved;
-    } catch (error) {
-      // Storage may be blocked; the normal GitHub image still works.
-    }
+    } catch (error) {}
 
     avatar.classList.add('team-avatar-editable');
-    avatar.setAttribute('role', 'button');
-    avatar.setAttribute('tabindex', '0');
-    avatar.setAttribute('aria-label', 'เปลี่ยนรูปผู้จัดทำ');
-    avatar.setAttribute('title', 'คลิกเพื่อเปลี่ยนรูป');
+
+    // Use a real <label> + <input type="file"> instead of a hidden input
+    // triggered by JavaScript. This makes the native file picker reliable.
+    var picker = document.createElement('label');
+    picker.className = 'team-avatar-picker';
+    picker.setAttribute('title', 'คลิกเพื่อเปลี่ยนรูป');
 
     var input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
-    input.hidden = true;
-    input.setAttribute('aria-hidden', 'true');
-    avatar.appendChild(input);
+    input.className = 'team-avatar-file';
+    input.setAttribute('aria-label', 'เลือกภาพใหม่สำหรับผู้จัดทำ');
 
     var overlay = document.createElement('span');
     overlay.className = 'team-avatar-overlay';
     overlay.innerHTML = '<span class="team-avatar-camera">↗</span><span>เปลี่ยนรูป</span>';
-    avatar.appendChild(overlay);
 
-    function openPicker(event) {
-      if (event) event.preventDefault();
-      input.click();
-    }
-
-    avatar.addEventListener('click', openPicker);
-
-    avatar.addEventListener('keydown', function (event) {
-      if (event.key === 'Enter' || event.key === ' ') {
-        openPicker(event);
-      }
-    });
+    picker.appendChild(input);
+    picker.appendChild(overlay);
+    avatar.appendChild(picker);
 
     input.addEventListener('change', function () {
       var file = input.files && input.files[0];
@@ -70,7 +58,18 @@ document.addEventListener('DOMContentLoaded', function () {
       reader.readAsDataURL(file);
     });
 
-    // Double-click with Ctrl/Cmd restores the original repository image.
+    // Keyboard support: focus the avatar, then Enter/Space opens the picker.
+    avatar.setAttribute('role', 'button');
+    avatar.setAttribute('tabindex', '0');
+    avatar.setAttribute('aria-label', 'เปลี่ยนรูปผู้จัดทำ');
+
+    avatar.addEventListener('keydown', function (event) {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      input.click();
+    });
+
+    // Ctrl/Cmd + double-click restores the original repository image.
     avatar.addEventListener('dblclick', function (event) {
       if (!event.ctrlKey && !event.metaKey) return;
       img.src = originalSrc;
